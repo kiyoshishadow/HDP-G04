@@ -1,15 +1,16 @@
 {% if user.is_authenticated %}
-<div class="flex items-center space-x-4">
-    <span class="text-gray-700">Hola {{ user.username }}!</span>
-    <form id="logoutForm" action="/logout/" method="post" class="m-0">
-        {% csrf_token %}
-        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md transition duration-200">
-            Cerrar sesión
-        </button>
-    </form>
-</div>
+<form id="logoutForm" action="/logout/" method="post" class="navbar-right">
+    {% csrf_token %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><span class="navbar-brand">Hello {{ user.username }}!</span></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    </ul>
+</form>
+
 {% else %}
-<a href="{% url 'login' %}" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md transition duration-200">
-    Ingresar
-</a>
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'login' %}">Log in</a></li>
+</ul>
+
 {% endif %}
