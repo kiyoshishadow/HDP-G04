@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
     path('crear_reserva/', views.crear_reserva, name='crear_reserva'),
+    path('mis_reservas/', views.mis_reservas, name='mis_reservas'),
 ]

@@ -1,0 +1,66 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6 w-full transform transition-all duration-300 hover:shadow-lg">
+    <h2 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">Mis Reservas</h2>
+    <div class="overflow-x-auto ring-1 ring-black ring-opacity-5 rounded-lg">
+        <div class="inline-block min-w-full align-middle">
+            <div class="overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6">Número</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Origen</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Destino</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Fecha</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Tipo</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Recepción</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Entrega</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Estado</th>
+                </tr>
+            </thead>            <tbody class="divide-y divide-gray-200 bg-white">
+                <tr class="hover:bg-gray-50">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">RES-20250521</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Valencia</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Miami</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">21/05/2025</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">20' de uso general</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Terminal/Ramp</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Terminal/Ramp</td>                    <td class="whitespace-nowrap px-3 py-4">
+                        <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                            Activa
+                        </span>
+                    </td>
+                </tr><tr class="hover:bg-gray-50">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">RES-20250520</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Barcelona</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Nueva York</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">20/05/2025</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">40' de uso general</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Terminal/Ramp</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Terminal/Ramp</td>                    <td class="whitespace-nowrap px-3 py-4">
+                        <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+                            Pendiente
+                        </span>
+                    </td>
+                </tr><tr class="hover:bg-gray-50">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">RES-20250519</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">La Habana</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Houston</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">19/05/2025</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Contenedor frigorífico 20'</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">En puerta</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Terminal/Ramp</td>                    <td class="whitespace-nowrap px-3 py-4">
+                        <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                            Completada
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

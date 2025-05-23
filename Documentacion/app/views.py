@@ -57,3 +57,16 @@ def about(request):
             'year': datetime.now().year,
         }
     )
+
+def mis_reservas(request):
+    """Renders the mis reservas page."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/mis_reservas.html',
+        {
+            'title': 'Mis Reservas',
+            'message': 'Página para ver tus reservas.',
+            'year': datetime.now().year,
+        }
+    )
