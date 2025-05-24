@@ -16,10 +16,7 @@
 
     {# Asegúrate de que este archivo exista en 'tu_proyecto/tu_app/static/tu_app/content/site.css' #}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'app/style/style.css' %}">
-
-
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'app/style/style.css' %}">    
 </head>
 
 <body>
@@ -39,20 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Nuestra Compañia</a>
                     </li>
-                    <!--<li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>-->
+                    
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -69,23 +53,8 @@
         </div>
     </nav>
 
-    <div class="container-fluid" id="main-content-wrapper">
-        <div class="row flex-grow-1">
-            <!--<aside class="col-md-3 col-lg-2 bg-dark text-white p-0 sidebar">
-        <nav class="nav flex-column mt-3">
-            <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-gauge me-2"></i> Cotizar</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-file-invoice me-2"></i> Itinerario</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-box me-2"></i> Reservas</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-users me-2"></i> Documentacion</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-chart-line me-2"></i> Finanzas</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-gear me-2"></i>Tracking</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-gear me-2"></i>Importacion</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-gear me-2"></i>Tracking</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-gear me-2"></i>Tracking</a>
-            <hr class="border-secondary mx-3">
-            <a class="nav-link" href="#"><i class="fa-solid fa-circle-question me-2"></i> Ayuda</a>
-            <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión</a>-->
-            <!--</nav>-->
+    <div class="container-fluid" id="main-content-wrapper" >
+        <div class="row flex-grow-1 fixed-left">
             <aside class="col-md-3 col-lg-2 bg-dark text-white p-0 sidebar">
                 <nav class="nav flex-column mt-3">
 
@@ -165,7 +134,6 @@
                     <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión</a>
                 </nav>
             </aside>
-            </aside>
 
             <main class="col-md-9 col-lg-10 p-4">
                 {# INICIO DEL BLOQUE DE CONTENIDO PRINCIPAL #}
@@ -183,7 +151,7 @@
     </div>
 
     {# Footer simple de la aplicación #}
-    <footer class="border-top footer text-muted mt-auto py-3 bg-light">
+    <footer class="border-top footer text-muted mt-auto py-3 bg-light text-center">
         <div class="container-fluid">
             &copy; {% now "Y" %} - Aplicacion Django Postgres Grupo 4 Herramientas de Productividad
         </div>
@@ -192,6 +160,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     {# Bloque para scripts adicionales que pueden ser añadidos por plantillas hijas #}
+
     {% block scripts %}{% endblock %}
 
 </body>
