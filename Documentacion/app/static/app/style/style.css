@@ -1,0 +1,41 @@
+/* Asegura que html y body ocupen el 100% de la altura y elimina márgenes/paddings predeterminados */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* Añade padding superior al body para compensar la navbar fija */
+body {
+    padding-top: 56px; /* Altura aproximada de la navbar. Ajustar si la navbar tiene otra altura */
+}
+
+/* Contenedor principal del sidebar y el contenido */
+#main-content-wrapper {
+    min-height: calc(100vh - 56px); /* Ocupa el resto de la altura de la pantalla */
+    display: flex; /* Permite que las columnas se estiren verticalmente */
+}
+
+/* Estilos para el sidebar */
+.sidebar {
+    overflow-y: auto; /* Permite scroll si el contenido del sidebar es muy largo */
+    max-height: 100%;
+}
+
+    /* Estilos personalizados para los enlaces del menú vertical */
+    .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.75); /* Color de texto más claro para links */
+        padding: 0.75rem 1rem;
+        display: block; /* Para que ocupen todo el ancho del li */
+    }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff; /* Color de texto blanco en hover/activo */
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo sutil en hover/activo */
+        }
+
+    .sidebar .nav-item {
+        margin-bottom: 0; /* Elimina margen entre elementos de la lista */
+    }
