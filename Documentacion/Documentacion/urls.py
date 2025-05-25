@@ -27,4 +27,7 @@ urlpatterns = [
          name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
+
+    path('crear_instruccion_embarque', views.crear_instruccion_embarque, name='crear_instruccion'),
+    path('confirmacion_instruccion', views.confirmacion_instruccion, name='confirmacion_instruccion'),
 ]

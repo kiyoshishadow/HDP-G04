@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar Instrucciones de Embarque</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"], textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        ul.errorlist {
+            color: red;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <h1>Ingresar Instrucciones de Embarque</h1>
+    <form method="post">
+        {% csrf_token %} {# ¡MUY IMPORTANTE para la seguridad de Django! #}
+
+        {% if form.errors %}
+        <ul class="errorlist">
+            {% for field in form %}
+            {% if field.errors %}
+            <li>{{ field.label }}: {{ field.errors }}</li>
+            {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+            <li>{{ form.non_field_errors }}</li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+        {{ form.as_p }} {# Renderiza el formulario como párrafos HTML #}
+        {# O podrías renderizarlo campo por campo para mayor control: #}
+       
+        <div>
+            <label for="{{ form.shipper_nombre.id_for_label }}">Nombre del Shipper:</label>
+            {{ form.shipper_nombre }}
+            {% if form.shipper_nombre.errors %}
+            <ul class="errorlist">{% for error in form.shipper_nombre.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        
+
+        <button type="submit">Enviar Instrucciones</button>
+    </form>
+</body>
+</html>

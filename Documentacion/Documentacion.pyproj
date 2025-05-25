@@ -32,6 +32,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="admin.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\forms.py" />
     <Compile Include="app\models.py" />
     <Compile Include="app\tests.py" />
@@ -60,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\style\style.css" />
+    <Content Include="app\templates\app\ConfirmacionEmbarque.html" />
+    <Content Include="app\templates\app\InstruccionEmbarque.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
