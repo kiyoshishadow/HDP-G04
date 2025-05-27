@@ -65,6 +65,7 @@
     <Content Include="app\static\app\style\style.css" />
     <Content Include="app\templates\app\ConfirmacionEmbarque.html" />
     <Content Include="app\templates\app\InstruccionEmbarque.html" />
+    <Content Include="app\templates\app\crear_reserva.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

@@ -5,7 +5,7 @@ Definition of forms.
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
-from .models import InstruccionEmbarque
+from .models import InstruccionEmbarque, ReservaCarga
 from django.db import models
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -20,7 +20,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'placeholder':'Password'}))
 
 
-class ClienteForm(models.Model): # <<-- Asegúrate que el nombre sea 'Cliente' con C mayúscula
+class ClienteForm(models.Model): # <<-- Asegï¿½rate que el nombre sea 'Cliente' con C mayï¿½scula
     nombre = models.CharField(max_length=255)
     direccion = models.TextField()
     telefono = models.CharField(max_length=20, blank=True, null=True)
@@ -34,9 +34,9 @@ class ClienteForm(models.Model): # <<-- Asegúrate que el nombre sea 'Cliente' co
 class InstruccionEmbarqueForm(forms.ModelForm):
     class Meta:
         model = InstruccionEmbarque
-        fields = '__all__' # Utilizar '__all__' es la forma más sencilla para ModelForms.
+        fields = '__all__' # Utilizar '__all__' es la forma mï¿½s sencilla para ModelForms.
 
-        # Si quisieras especificar los campos, deberían ser los nuevos nombres del modelo:
+        # Si quisieras especificar los campos, deberï¿½an ser los nuevos nombres del modelo:
         fields = [
              'shipper',
              'consignee',
@@ -51,13 +51,27 @@ class InstruccionEmbarqueForm(forms.ModelForm):
              'numero_contenedor',
              'numero_sello',
              'tipo_servicio',
-        #     # 'fecha_creacion', # Estos campos se manejan automáticamente
-        #     # 'ultima_actualizacion', # Estos campos se manejan automáticamente
+        #     # 'fecha_creacion', # Estos campos se manejan automï¿½ticamente
+        #     # 'ultima_actualizacion', # Estos campos se manejan automï¿½ticamente
          ]
 
         widgets = {
             'fecha_embarque_estimada': forms.DateInput(attrs={'type': 'date'}),
             'descripcion_mercancia': forms.Textarea(attrs={'rows': 4}),
-            # Puedes seguir añadiendo más widgets si lo necesitas:
+            # Puedes seguir aï¿½adiendo mï¿½s widgets si lo necesitas:
              'instrucciones_especiales': forms.Textarea(attrs={'rows': 3}),
+        }
+
+
+class ReservaCargaForm(forms.ModelForm):
+    class Meta:
+        model = ReservaCarga
+        fields = '__all__'
+        exclude = ['estado_reserva'] # Excluir el campo estado_reserva
+        widgets = {
+            'fecha_embarque': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'fecha_limite_llegada': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'descripcion_mercancia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'instrucciones_especiales': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'notas_documentacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
