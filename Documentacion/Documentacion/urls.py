@@ -8,7 +8,6 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 
-
 urlpatterns = [
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
@@ -30,4 +29,5 @@ urlpatterns = [
 
     path('crear_instruccion_embarque', views.crear_instruccion_embarque, name='crear_instruccion'),
     path('confirmacion_instruccion', views.confirmacion_instruccion, name='confirmacion_instruccion'),
+    path('crear_reserva/', views.crear_reserva, name='crear_reserva'),
 ]
