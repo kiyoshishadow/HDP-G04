@@ -80,9 +80,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reservasDropdown">
                             <li><a class="dropdown-item" href="{% url 'crear_reserva' %}">Crear Reserva</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Reservas</a></li>
-                            <li><a class="dropdown-item" href="#">Modificar Reserva</a></li>
-                            <li><a class="dropdown-item" href="#">Eliminar Reserva</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
+                            
                             <li><a class="dropdown-item" href="#">Servicios Adicoinales</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Historial de Reservas</a></li>
@@ -96,7 +95,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
                             <li><a class="dropdown-item" href="#">Mis Embarques</a></li>
-                            <li><a class="dropdown-item" href="crear_instruccion_embarque">Instrucciones de Embarque</a></li>
+                            <li><a class="dropdown-item" href="{% url 'crear_instruccion' %}">Instrucciones de Embarque</a></li>
                             <li><a class="dropdown-item" href="#">Aprobar Borrador BL</a></li>
                             <li><a class="dropdown-item" href="#">Documentos de Embarque</a></li>
                             <li><a class="dropdown-item" href="#">Reclamos</a></li>

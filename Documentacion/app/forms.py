@@ -66,7 +66,55 @@ class InstruccionEmbarqueForm(forms.ModelForm):
 class ReservaCargaForm(forms.ModelForm):
     class Meta:
         model = ReservaCarga
-        fields = '__all__'
+        fields = [
+            'nombre_empresa_solicitante',
+            'id_cliente_texto',
+            'email_contacto',
+            'telefono_contacto',
+            'numero_cotizacion',
+            'descripcion_mercancia',
+            'tipo_mercancia',
+            'peso_bruto_total',
+            'unidad_peso',
+            'volumen_total',
+            'numero_bultos',
+            'codigo_hs',
+            'tipo_contenedor',
+            'cantidad_contenedores',
+            'condiciones_especiales_contenedor',
+            'puerto_origen',
+            'puerto_destino',
+            'puerto_transbordo',
+            'fecha_embarque',
+            'fecha_limite_llegada',
+            'viaje_buque',
+            'shipper_nombre',
+            'shipper_direccion',
+            'shipper_telefono',
+            'shipper_email',
+            'consignee_nombre',
+            'consignee_direccion',
+            'consignee_telefono',
+            'consignee_email',
+            'notify_nombre',
+            'notify_direccion',
+            'notify_telefono',
+            'notify_email',
+            'seguro_carga',
+            'despacho_origen',
+            'despacho_destino',
+            'transporte_origen',
+            'transporte_destino',
+            'otros_servicios',
+            'instrucciones_especiales',
+            'temperatura_requerida',
+            'unidad_temperatura',
+            'ventilacion_requerida',
+            'numero_un',
+            'imo_class',
+            'packing_group',
+            'notas_documentacion',
+        ]
         exclude = ['estado_reserva'] # Excluir el campo estado_reserva
         widgets = {
             'fecha_embarque': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
@@ -74,4 +122,7 @@ class ReservaCargaForm(forms.ModelForm):
             'descripcion_mercancia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'instrucciones_especiales': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'notas_documentacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+        labels = {
+            'id_cliente_texto': 'ID de Cliente (Opcional)',
         }

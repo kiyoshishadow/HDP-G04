@@ -3,10 +3,13 @@ Definition of views.
 """
 
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .forms import InstruccionEmbarqueForm, ReservaCargaForm
+from .models import ReservaCarga
 
 def home(request):
     """Renders the home page."""
@@ -84,3 +87,51 @@ def crear_reserva(request):
         print("Solicitud GET. Mostrando formulario vacío.")
         form = ReservaCargaForm()
     return render(request, 'app/crear_reserva.html', {'form': form})
+
+def mis_reservas(request):
+    """Vista para mostrar las reservas del usuario."""
+    reservas = ReservaCarga.objects.all().order_by('-fecha_creacion_reserva')
+    return render(
+        request,
+        'app/mis_reservas.html',
+        {
+            'title': 'Mis Reservas',
+            'reservas': reservas,
+            'year': datetime.now().year,
+        }
+    )
+
+def editar_reserva(request, reserva_id):
+    """Vista para editar una reserva existente."""
+    reserva = get_object_or_404(ReservaCarga, id=reserva_id)
+    
+    if request.method == 'POST':
+        form = ReservaCargaForm(request.POST, instance=reserva)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Reserva actualizada correctamente.')
+            return redirect('mis_reservas')
+    else:
+        form = ReservaCargaForm(instance=reserva)
+    
+    return render(
+        request,
+        'app/editar_reserva.html',
+        {
+            'form': form,
+            'reserva': reserva,
+            'title': 'Editar Reserva',
+            'year': datetime.now().year,
+        }
+    )
+
+def eliminar_reserva(request, reserva_id):
+    """Vista para eliminar una reserva."""
+    reserva = get_object_or_404(ReservaCarga, id=reserva_id)
+    
+    if request.method == 'POST':
+        reserva.delete()
+        messages.success(request, 'Reserva eliminada correctamente.')
+        return redirect('mis_reservas')
+    
+    return redirect('mis_reservas')
