@@ -3,12 +3,12 @@ Definition of views.
 """
 
 from datetime import datetime
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
+from django.http import HttpRequest # type: ignore
+from django.contrib import messages # type: ignore
+from django.contrib.auth.decorators import login_required # type: ignore
 
-from .forms import InstruccionEmbarqueForm, ReservaCargaForm
+from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm
 from .models import ReservaCarga
 
 def home(request):
@@ -55,7 +55,7 @@ def crear_instruccion_embarque(request):
         form = InstruccionEmbarqueForm(request.POST)
         if form.is_valid():
             form.save()
-            # Despu�s de guardar, redirige a la p�gina de confirmaci�n
+            # Después de guardar, redirige a la página de confirmación
             return redirect('confirmacion_instruccion')
     else:
         form = InstruccionEmbarqueForm()
@@ -135,3 +135,31 @@ def eliminar_reserva(request, reserva_id):
         return redirect('mis_reservas')
     
     return redirect('mis_reservas')
+
+def register(request):
+    if request.method == 'POST':
+        user_form = RegistroUsuarioForm(request.POST)
+        perfil_form = PerfilUsuarioForm(request.POST)
+        if user_form.is_valid() and perfil_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+            perfil = perfil_form.save(commit=False)
+            perfil.user = user
+            perfil.save()
+            messages.success(request, '¡Registro exitoso! Ahora puedes iniciar sesión.')
+            return redirect('login')
+    else:
+        user_form = RegistroUsuarioForm()
+        perfil_form = PerfilUsuarioForm()
+    return render(request, 'app/register.html', {
+        'user_form': user_form,
+        'perfil_form': perfil_form
+    })
+
+def servicios_adicionales(request):
+    """Vista para mostrar servicios adicionales."""
+    return render(request, 'app/servicios_adicionales.html', {
+        'title': 'Servicios Adicionales',
+        'year': datetime.now().year,
+    })

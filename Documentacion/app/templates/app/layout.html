@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             {# Enlace de la marca/logo de la navbar #}
-            <a class="navbar-brand" href="/">Inicio</a> {# Considera usar {% url 'home' %} si tienes una URL con nombre 'home' #}
+            <a class="navbar-brand" href="{% url 'home' %}">Inicio</a> {# Considera usar {% url 'home' %} si tienes una URL con nombre 'home' #}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -42,13 +42,6 @@
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
-                <ul class="navbar-nav ms-2">
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light" href="#">
-                            <i class="fa-solid fa-right-to-bracket"></i> Login
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
     </nav>
@@ -81,8 +74,7 @@
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reservasDropdown">
                             <li><a class="dropdown-item" href="{% url 'crear_reserva' %}">Crear Reserva</a></li>
                             <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
-                            
-                            <li><a class="dropdown-item" href="#">Servicios Adicoinales</a></li>
+                            <li><a class="dropdown-item" href="{% url 'servicios_adicionales' %}">Servicios Adicionales</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Historial de Reservas</a></li>
                         </ul>
@@ -130,7 +122,9 @@
                     <hr class="border-secondary mx-3">
 
                     <a class="nav-link" href="#"><i class="fa-solid fa-circle-question me-2"></i> Ayuda</a>
-                    <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión</a>
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión
+                    </a>
                 </nav>
             </aside>
 

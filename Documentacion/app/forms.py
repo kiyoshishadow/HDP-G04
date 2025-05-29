@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import InstruccionEmbarque, ReservaCarga
 from django.db import models
+from django.contrib.auth.models import User
+from .models import PerfilUsuario
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -125,4 +127,41 @@ class ReservaCargaForm(forms.ModelForm):
         }
         labels = {
             'id_cliente_texto': 'ID de Cliente (Opcional)',
+        }
+
+class RegistroUsuarioForm(forms.ModelForm):
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+        if password and password2 and password != password2:
+            self.add_error('password2', 'Las contraseñas no coinciden.')
+        return cleaned_data
+
+class PerfilUsuarioForm(forms.ModelForm):
+    class Meta:
+        model = PerfilUsuario
+        fields = ['country_code', 'phone', 'company', 'tax_id', 'address', 'city', 'postal_code', 'country']
+        widgets = {
+            'country_code': forms.Select(attrs={'class': 'form-select'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'company': forms.TextInput(attrs={'class': 'form-control'}),
+            'tax_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-select'}),
         }
