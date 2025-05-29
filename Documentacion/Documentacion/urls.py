@@ -39,4 +39,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('home/', views.home, name='home'),
     path('servicios_adicionales/', views.servicios_adicionales, name='servicios_adicionales'),
+    path('mapa/', views.mapa, name='mapa'),
 ]

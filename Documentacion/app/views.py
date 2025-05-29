@@ -163,3 +163,10 @@ def servicios_adicionales(request):
         'title': 'Servicios Adicionales',
         'year': datetime.now().year,
     })
+
+def mapa(request):
+    """Vista para mostrar el mapa."""
+    return render(request, 'app/mapa.html', {
+        'title': 'Mapa',
+        'year': datetime.now().year,
+    })
