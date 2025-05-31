@@ -4,7 +4,8 @@ Definition of models.
 
 # Documentacion/models.py
 
-from django.db import models # <<-- �Aseg�rate de que esta l�nea est� aqu�!
+from django.db import models # type: ignore # <<-- Asegrate de que esta lnea est aqu!
+from django.contrib.auth.models import User
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=255)
@@ -161,3 +162,31 @@ class ReservaCarga(models.Model):
 
     def __str__(self):
         return f"Reserva #{self.pk} - {self.nombre_empresa_solicitante} - {self.puerto_origen} a {self.puerto_destino}"
+
+COUNTRY_CODE_CHOICES = [
+    ("+34", "+34 España"),
+    ("+52", "+52 México"),
+    ("+57", "+57 Colombia"),
+    ("+1", "+1 USA"),
+]
+
+COUNTRY_CHOICES = [
+    ("España", "España"),
+    ("México", "México"),
+    ("Colombia", "Colombia"),
+    ("Estados Unidos", "Estados Unidos"),
+]
+
+class PerfilUsuario(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    country_code = models.CharField("Código del país", max_length=10, choices=COUNTRY_CODE_CHOICES)
+    phone = models.CharField("Número de teléfono", max_length=30)
+    company = models.CharField("Nombre de empresa", max_length=255)
+    tax_id = models.CharField("Impuesto de Sociedades / Registro / Número de IVA", max_length=100)
+    address = models.CharField("Dirección de la calle / Número", max_length=255)
+    city = models.CharField("Ciudad", max_length=100)
+    postal_code = models.CharField("Código postal", max_length=20)
+    country = models.CharField("País", max_length=100, choices=COUNTRY_CHOICES)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"

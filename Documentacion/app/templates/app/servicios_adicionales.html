@@ -1,0 +1,81 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% block title %}Servicios Adicionales{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Servicios adicionales: Complete Su Embarque</h1>
+    <p class="mb-4">Puede completar sus reservas con uno de los siguientes servicios adicionales:</p>
+    <div class="mb-4">
+        <p class="mb-2">¿Todavía no tiene una reserva?</p>
+        <a href="{% url 'crear_reserva' %}" class="btn btn-primary">
+            Haga su reserva
+            <i class="fa fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img9.jpg' %}" class="card-img-top" alt="Ship Green">
+                <div class="card-body">
+                    <h5 class="card-title">Embarque Verde</h5>
+                    <p class="card-text">Reserve en línea embarques respetuosos con el clima y evite activamente el 25, 50 o 100% de las emisiones de CO2e de sus embarques.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img10.jpg' %}" class="card-img-top" alt="Live Position">
+                <div class="card-body">
+                    <h5 class="card-title">Posición en Vivo</h5>
+                    <p class="card-text">Acceda a los datos en tiempo real de sus embarques con solo introducir el número de reserva o de contenedor y obtenga los datos puerta a puerta de un vistazo.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img11.jpg' %}" class="card-img-top" alt="Additional Freetime">
+                <div class="card-body">
+                    <h5 class="card-title">Tiempo Libre Adicional</h5>
+                    <p class="card-text">Compre tiempo de detención del contenedor para sus embarques adicionalmente a las tarifas de tiempo libre: fácil, en línea y a un precio reducido.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img12.jpg' %}" class="card-img-top" alt="Shipping Guarantee">
+                <div class="card-body">
+                    <h5 class="card-title">Garantía de Embarque</h5>
+                    <p class="card-text">Asegure un espacio para su contenedor en el buque deseado y proteja su envío de cualquier cambio inesperado con solo unos clics.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img13.jpg' %}" class="card-img-top" alt="Cargo Shield">
+                <div class="card-body">
+                    <h5 class="card-title">Escudo de Carga</h5>
+                    <p class="card-text">Proteja su carga y su negocio: con Cargo Shield puede extender la responsabilidad de su B/L y elegir entre 3 opciones de protección diferentes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img14.jpg' %}" class="card-img-top" alt="Controlled Atmosphere">
+                <div class="card-body">
+                    <h5 class="card-title">Atmósfera Controlada</h5>
+                    <p class="card-text">Agregue Controlled Atmosphere a su cotización para mantener su carga perecedera en excelentes condiciones.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{% static 'app/Imagenes/img15.jpg' %}" class="card-img-top" alt="Customs Clearance">
+                <div class="card-body">
+                    <h5 class="card-title">Despacho Aduanero</h5>
+                    <p class="card-text">Despache su aduana directamente en línea. Disponible para exportaciones e importaciones desde/hacia países seleccionados.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

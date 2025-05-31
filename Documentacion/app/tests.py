@@ -3,8 +3,8 @@ This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
 """
 
-import django
-from django.test import TestCase
+import django # type: ignore
+from django.test import TestCase # type: ignore
 
 # TODO: Configure your database in settings.py and sync before running tests.
 

@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import InstruccionEmbarque, ReservaCarga
 from django.db import models
+from django.contrib.auth.models import User
+from .models import PerfilUsuario
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -66,7 +68,55 @@ class InstruccionEmbarqueForm(forms.ModelForm):
 class ReservaCargaForm(forms.ModelForm):
     class Meta:
         model = ReservaCarga
-        fields = '__all__'
+        fields = [
+            'nombre_empresa_solicitante',
+            'id_cliente_texto',
+            'email_contacto',
+            'telefono_contacto',
+            'numero_cotizacion',
+            'descripcion_mercancia',
+            'tipo_mercancia',
+            'peso_bruto_total',
+            'unidad_peso',
+            'volumen_total',
+            'numero_bultos',
+            'codigo_hs',
+            'tipo_contenedor',
+            'cantidad_contenedores',
+            'condiciones_especiales_contenedor',
+            'puerto_origen',
+            'puerto_destino',
+            'puerto_transbordo',
+            'fecha_embarque',
+            'fecha_limite_llegada',
+            'viaje_buque',
+            'shipper_nombre',
+            'shipper_direccion',
+            'shipper_telefono',
+            'shipper_email',
+            'consignee_nombre',
+            'consignee_direccion',
+            'consignee_telefono',
+            'consignee_email',
+            'notify_nombre',
+            'notify_direccion',
+            'notify_telefono',
+            'notify_email',
+            'seguro_carga',
+            'despacho_origen',
+            'despacho_destino',
+            'transporte_origen',
+            'transporte_destino',
+            'otros_servicios',
+            'instrucciones_especiales',
+            'temperatura_requerida',
+            'unidad_temperatura',
+            'ventilacion_requerida',
+            'numero_un',
+            'imo_class',
+            'packing_group',
+            'notas_documentacion',
+        ]
         exclude = ['estado_reserva'] # Excluir el campo estado_reserva
         widgets = {
             'fecha_embarque': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
@@ -74,4 +124,44 @@ class ReservaCargaForm(forms.ModelForm):
             'descripcion_mercancia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'instrucciones_especiales': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'notas_documentacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+        labels = {
+            'id_cliente_texto': 'ID de Cliente (Opcional)',
+        }
+
+class RegistroUsuarioForm(forms.ModelForm):
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+        if password and password2 and password != password2:
+            self.add_error('password2', 'Las contraseñas no coinciden.')
+        return cleaned_data
+
+class PerfilUsuarioForm(forms.ModelForm):
+    class Meta:
+        model = PerfilUsuario
+        fields = ['country_code', 'phone', 'company', 'tax_id', 'address', 'city', 'postal_code', 'country']
+        widgets = {
+            'country_code': forms.Select(attrs={'class': 'form-select'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'company': forms.TextInput(attrs={'class': 'form-control'}),
+            'tax_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-select'}),
         }
