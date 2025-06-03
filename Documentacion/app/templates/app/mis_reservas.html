@@ -51,12 +51,17 @@
                                 {% if reserva.transporte_destino %}<span class="badge bg-secondary mb-1">Transporte Destino</span> {% endif %}
                             </td>
                             <td>
-                                <span class="badge px-3 py-2 {% if reserva.estado_reserva == 'confirmada' %}bg-success
-                                                 {% elif reserva.estado_reserva == 'solicitada' %}bg-warning text-dark
-                                                 {% elif reserva.estado_reserva == 'en_proceso' %}bg-info text-dark
-                                                 {% elif reserva.estado_reserva == 'cancelada' %}bg-danger
-                                                 {% else %}bg-secondary{% endif %}">
-                                    {{ reserva.get_estado_reserva_display }}
+                                <span class="badge px-3 py-2
+                                    {% if reserva.estado_reserva == 'cancelada' %}bg-danger
+                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}bg-success
+                                    {% else %}bg-primary{% endif %}">
+                                    {% if reserva.estado_reserva == 'cancelada' %}
+                                        Cancelada
+                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}
+                                        Completada
+                                    {% else %}
+                                        En Curso
+                                    {% endif %}
                                 </span>
                             </td>
                             <td class="text-end">

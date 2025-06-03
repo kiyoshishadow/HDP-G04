@@ -4,11 +4,14 @@ Definition of views.
 
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
-from django.http import HttpRequest # type: ignore
+from django.http import HttpRequest, JsonResponse # type: ignore
 from django.contrib import messages # type: ignore
 from django.contrib.auth.decorators import login_required # type: ignore
 from django.utils.timezone import now # type: ignore # type: ignore
 from django.db.models import Q # type: ignore
+import json
+import os
+from django.conf import settings
 
 from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm
 from .models import ReservaCarga
@@ -100,6 +103,7 @@ def mis_reservas(request):
             'title': 'Mis Reservas',
             'reservas': reservas,
             'year': datetime.now().year,
+            'now': now(),
         }
     )
 
@@ -194,3 +198,28 @@ def historial_reservas(request):
         'year': datetime.now().year,
         'now': now(),
     })
+
+def autocomplete_puertos_local(request):
+    query = request.GET.get('q', '').lower()
+    if not query or len(query) < 2:
+        return JsonResponse({'results': []})
+
+    ports_path = os.path.join(settings.BASE_DIR, 'app', 'data', 'ports.json')
+    with open(ports_path, encoding='utf-8') as f:
+        ports_data = json.load(f)
+
+    results = []
+    for country, ports in ports_data.items():
+        for port in ports:
+            nombre = port.get('name', '')
+            pais = port.get('country', country)
+            codigo = port.get('unlocs', [None])[0] if 'unlocs' in port and port['unlocs'] else ''
+            if query in nombre.lower() or query in pais.lower():
+                results.append({
+                    'nombre': nombre,
+                    'pais': pais,
+                    'codigo': codigo
+                })
+            if len(results) >= 10:
+                return JsonResponse({'results': results})
+    return JsonResponse({'results': results})

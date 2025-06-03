@@ -41,4 +41,5 @@ urlpatterns = [
     path('servicios_adicionales/', views.servicios_adicionales, name='servicios_adicionales'),
     path('mapa/', views.mapa, name='mapa'),
     path('historial_reservas/', views.historial_reservas, name='historial_reservas'),
+    path('autocomplete_puertos/', views.autocomplete_puertos_local, name='autocomplete_puertos'),
 ]
