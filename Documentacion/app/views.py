@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
 from django.http import HttpRequest # type: ignore
 from django.contrib import messages # type: ignore
 from django.contrib.auth.decorators import login_required # type: ignore
+from django.utils.timezone import now # type: ignore # type: ignore
+from django.db.models import Q # type: ignore
 
 from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm
 from .models import ReservaCarga
@@ -89,8 +91,8 @@ def crear_reserva(request):
     return render(request, 'app/crear_reserva.html', {'form': form})
 
 def mis_reservas(request):
-    """Vista para mostrar las reservas del usuario."""
-    reservas = ReservaCarga.objects.all().order_by('-fecha_creacion_reserva')
+    """Vista para mostrar las reservas del usuario (excepto canceladas)."""
+    reservas = ReservaCarga.objects.exclude(estado_reserva='cancelada').order_by('-fecha_creacion_reserva')
     return render(
         request,
         'app/mis_reservas.html',
@@ -126,12 +128,13 @@ def editar_reserva(request, reserva_id):
     )
 
 def eliminar_reserva(request, reserva_id):
-    """Vista para eliminar una reserva."""
+    """Vista para cancelar una reserva (no eliminar físicamente)."""
     reserva = get_object_or_404(ReservaCarga, id=reserva_id)
     
     if request.method == 'POST':
-        reserva.delete()
-        messages.success(request, 'Reserva eliminada correctamente.')
+        reserva.estado_reserva = 'cancelada'
+        reserva.save()
+        messages.success(request, 'Reserva cancelada correctamente.')
         return redirect('mis_reservas')
     
     return redirect('mis_reservas')
@@ -169,4 +172,25 @@ def mapa(request):
     return render(request, 'app/mapa.html', {
         'title': 'Mapa',
         'year': datetime.now().year,
+    })
+
+# Vista para historial de reservas
+def historial_reservas(request):
+    """Vista para mostrar el historial de reservas."""
+    estado = request.GET.get('estado', 'todos')
+    reservas = ReservaCarga.objects.all()
+
+    if estado == 'en_curso':
+        reservas = reservas.filter(Q(fecha_limite_llegada__gt=now().date()) & ~Q(estado_reserva='cancelada'))
+    elif estado == 'canceladas':
+        reservas = reservas.filter(estado_reserva='cancelada')
+    elif estado == 'completadas':
+        reservas = reservas.filter(Q(fecha_limite_llegada__lte=now().date()) & ~Q(estado_reserva='cancelada'))
+
+    return render(request, 'app/historial_reservas.html', {
+        'title': 'Historial de Reservas',
+        'reservas': reservas,
+        'estado': estado,
+        'year': datetime.now().year,
+        'now': now(),
     })
