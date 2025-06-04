@@ -4,9 +4,14 @@ Definition of views.
 
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
-from django.http import HttpRequest # type: ignore
+from django.http import HttpRequest, JsonResponse # type: ignore
 from django.contrib import messages # type: ignore
 from django.contrib.auth.decorators import login_required # type: ignore
+from django.utils.timezone import now # type: ignore # type: ignore
+from django.db.models import Q # type: ignore
+import json
+import os
+from django.conf import settings
 
 from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm
 from .models import ReservaCarga
@@ -89,8 +94,8 @@ def crear_reserva(request):
     return render(request, 'app/crear_reserva.html', {'form': form})
 
 def mis_reservas(request):
-    """Vista para mostrar las reservas del usuario."""
-    reservas = ReservaCarga.objects.all().order_by('-fecha_creacion_reserva')
+    """Vista para mostrar las reservas del usuario (excepto canceladas)."""
+    reservas = ReservaCarga.objects.exclude(estado_reserva='cancelada').order_by('-fecha_creacion_reserva')
     return render(
         request,
         'app/mis_reservas.html',
@@ -98,6 +103,7 @@ def mis_reservas(request):
             'title': 'Mis Reservas',
             'reservas': reservas,
             'year': datetime.now().year,
+            'now': now(),
         }
     )
 
@@ -126,12 +132,13 @@ def editar_reserva(request, reserva_id):
     )
 
 def eliminar_reserva(request, reserva_id):
-    """Vista para eliminar una reserva."""
+    """Vista para cancelar una reserva (no eliminar físicamente)."""
     reserva = get_object_or_404(ReservaCarga, id=reserva_id)
     
     if request.method == 'POST':
-        reserva.delete()
-        messages.success(request, 'Reserva eliminada correctamente.')
+        reserva.estado_reserva = 'cancelada'
+        reserva.save()
+        messages.success(request, 'Reserva cancelada correctamente.')
         return redirect('mis_reservas')
     
     return redirect('mis_reservas')
@@ -170,3 +177,49 @@ def mapa(request):
         'title': 'Mapa',
         'year': datetime.now().year,
     })
+
+# Vista para historial de reservas
+def historial_reservas(request):
+    """Vista para mostrar el historial de reservas."""
+    estado = request.GET.get('estado', 'todos')
+    reservas = ReservaCarga.objects.all()
+
+    if estado == 'en_curso':
+        reservas = reservas.filter(Q(fecha_limite_llegada__gt=now().date()) & ~Q(estado_reserva='cancelada'))
+    elif estado == 'canceladas':
+        reservas = reservas.filter(estado_reserva='cancelada')
+    elif estado == 'completadas':
+        reservas = reservas.filter(Q(fecha_limite_llegada__lte=now().date()) & ~Q(estado_reserva='cancelada'))
+
+    return render(request, 'app/historial_reservas.html', {
+        'title': 'Historial de Reservas',
+        'reservas': reservas,
+        'estado': estado,
+        'year': datetime.now().year,
+        'now': now(),
+    })
+
+def autocomplete_puertos_local(request):
+    query = request.GET.get('q', '').lower()
+    if not query or len(query) < 2:
+        return JsonResponse({'results': []})
+
+    ports_path = os.path.join(settings.BASE_DIR, 'app', 'data', 'ports.json')
+    with open(ports_path, encoding='utf-8') as f:
+        ports_data = json.load(f)
+
+    results = []
+    for country, ports in ports_data.items():
+        for port in ports:
+            nombre = port.get('name', '')
+            pais = port.get('country', country)
+            codigo = port.get('unlocs', [None])[0] if 'unlocs' in port and port['unlocs'] else ''
+            if query in nombre.lower() or query in pais.lower():
+                results.append({
+                    'nombre': nombre,
+                    'pais': pais,
+                    'codigo': codigo
+                })
+            if len(results) >= 10:
+                return JsonResponse({'results': results})
+    return JsonResponse({'results': results})

@@ -7,6 +7,8 @@
     {# Cargar la etiqueta 'static' para servir archivos estáticos #}
     {% load static %}
 
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'app/Imagenes/icon.png' %}" />
+
     {# Título dinámico que puede ser sobrescrito por plantillas hijas #}
     <title>{% block title %}My Django Application{% endblock %}</title>
 
@@ -76,7 +78,7 @@
                             <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
                             <li><a class="dropdown-item" href="{% url 'servicios_adicionales' %}">Servicios Adicionales</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Historial de Reservas</a></li>
+                            <li><a class="dropdown-item" href="{% url 'historial_reservas' %}">Historial de Reservas</a></li>
                         </ul>
                     </li>
 

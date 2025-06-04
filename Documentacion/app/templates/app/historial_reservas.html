@@ -2,8 +2,15 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4 fw-bold">Mis Reservas</h2>
-    
+    <h2 class="mb-4 fw-bold">Historial de Reservas</h2>
+
+    <div class="mb-3">
+        <a href="?estado=en_curso" class="btn btn-outline-primary {% if estado == 'en_curso' %}active{% endif %}">En Curso</a>
+        <a href="?estado=canceladas" class="btn btn-outline-danger {% if estado == 'canceladas' %}active{% endif %}">Canceladas</a>
+        <a href="?estado=completadas" class="btn btn-outline-success {% if estado == 'completadas' %}active{% endif %}">Completadas</a>
+        <a href="?estado=todos" class="btn btn-outline-secondary {% if estado == 'todos' %}active{% endif %}">Todos</a>
+    </div>
+
     {% if reservas %}
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body p-0">
@@ -15,8 +22,6 @@
                             <th>Empresa</th>
                             <th>Detalles de Carga</th>
                             <th>Ruta y Fechas</th>
-                            <th>Contenedor</th>
-                            <th>Servicios</th>
                             <th>Estado</th>
                             <th class="text-end">Acciones</th>
                         </tr>
@@ -25,63 +30,24 @@
                         {% for reserva in reservas %}
                         <tr>
                             <td class="fw-semibold">#{{ reserva.id }}</td>
+                            <td>{{ reserva.nombre_empresa_solicitante }}</td>
+                            <td>{{ reserva.tipo_mercancia }} - {{ reserva.peso_bruto_total }} {{ reserva.unidad_peso }}</td>
+                            <td>{{ reserva.puerto_origen }} → {{ reserva.puerto_destino }}<br>ETD: {{ reserva.fecha_embarque|date:"d/m/Y" }}</td>
                             <td>
-                                <span class="fw-semibold">{{ reserva.nombre_empresa_solicitante }}</span><br>
-                                <small class="text-muted">{{ reserva.email_contacto }}</small>
-                            </td>
-                            <td>
-                                <span class="fw-semibold">{{ reserva.tipo_mercancia }}</span><br>
-                                <span class="text-muted">{{ reserva.peso_bruto_total }} {{ reserva.unidad_peso }}</span><br>
-                                <span class="text-muted">{{ reserva.numero_bultos }} bultos</span>
-                            </td>
-                            <td>
-                                <span class="fw-semibold">Origen:</span> {{ reserva.puerto_origen }}<br>
-                                <span class="fw-semibold">Destino:</span> {{ reserva.puerto_destino }}<br>
-                                <span class="fw-semibold">ETD:</span> {{ reserva.fecha_embarque|date:"d/m/Y" }}
-                            </td>
-                            <td>
-                                <span class="fw-semibold">{{ reserva.tipo_contenedor }}</span><br>
-                                <span class="text-muted">Cant: {{ reserva.cantidad_contenedores }}</span>
-                            </td>
-                            <td>
-                                {% if reserva.seguro_carga %}<span class="badge bg-info text-dark mb-1">Seguro</span> {% endif %}
-                                {% if reserva.despacho_origen %}<span class="badge bg-primary mb-1">Despacho Origen</span> {% endif %}
-                                {% if reserva.despacho_destino %}<span class="badge bg-primary mb-1">Despacho Destino</span> {% endif %}
-                                {% if reserva.transporte_origen %}<span class="badge bg-secondary mb-1">Transporte Origen</span> {% endif %}
-                                {% if reserva.transporte_destino %}<span class="badge bg-secondary mb-1">Transporte Destino</span> {% endif %}
-                            </td>
-                            <td>
-                                <span class="badge px-3 py-2
-                                    {% if reserva.estado_reserva == 'cancelada' %}bg-danger
-                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}bg-success
-                                    {% else %}bg-primary{% endif %}">
-                                    {% if reserva.estado_reserva == 'cancelada' %}
-                                        Cancelada
-                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}
-                                        Completada
-                                    {% else %}
-                                        En Curso
-                                    {% endif %}
-                                </span>
+                                {% if reserva.estado_reserva == 'cancelada' %}
+                                    <span class="badge bg-danger">Cancelada</span>
+                                {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}
+                                    <span class="badge bg-success">Completada</span>
+                                {% else %}
+                                    <span class="badge bg-primary">En Curso</span>
+                                {% endif %}
                             </td>
                             <td class="text-end">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center me-2"
-                                            style="width: 32px; height: 32px;" title="Ver detalles"
-                                            data-bs-toggle="modal" data-bs-target="#detalleReserva{{ reserva.id }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <a href="{% url 'editar_reserva' reserva.id %}" class="btn btn-warning rounded-circle d-flex align-items-center justify-content-center me-2"
-                                       style="width: 32px; height: 32px;" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <button type="button" class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center"
-                                            style="width: 32px; height: 32px;" title="Eliminar"
-                                            data-bs-toggle="modal" data-bs-target="#eliminarReserva{{ reserva.id }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-
+                                <button type="button" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                        style="width: 32px; height: 32px;" title="Ver detalles"
+                                        data-bs-toggle="modal" data-bs-target="#detalleReserva{{ reserva.id }}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
                                 <!-- Modal de Detalles -->
                                 <div class="modal fade" id="detalleReserva{{ reserva.id }}" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
@@ -193,29 +159,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Modal de Eliminar -->
-                                <div class="modal fade" id="eliminarReserva{{ reserva.id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-danger bg-opacity-10 border-bottom-0">
-                                                <h5 class="modal-title fw-bold text-danger">Confirmar Eliminación</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>¿Estás seguro de que deseas eliminar la reserva <span class="fw-bold">#{{ reserva.id }}</span>?</p>
-                                                <p class="text-danger"><strong>Esta acción no se puede deshacer.</strong></p>
-                                            </div>
-                                            <div class="modal-footer bg-light border-top-0">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <form action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display: inline;">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                         {% endfor %}
@@ -225,13 +168,7 @@
         </div>
     </div>
     {% else %}
-    <div class="alert alert-info d-flex align-items-center" role="alert">
-        <i class="fas fa-info-circle me-2"></i>
-        <div>
-            No tienes reservas registradas. 
-            <a href="{% url 'crear_reserva' %}" class="alert-link">¡Crea tu primera reserva aquí!</a>
-        </div>
-    </div>
+    <p class="text-muted">No hay reservas disponibles.</p>
     {% endif %}
 </div>
 {% endblock %}
