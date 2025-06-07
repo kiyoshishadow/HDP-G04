@@ -173,3 +173,5 @@ class PerfilUsuarioForm(forms.ModelForm):
             'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-select'}),
         }
+
+

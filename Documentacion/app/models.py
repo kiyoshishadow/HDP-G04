@@ -18,17 +18,17 @@ class Cliente(models.Model):
 
 class InstruccionEmbarque(models.Model):
    
-    numero_booking = models.CharField("Número de Booking", max_length=50)
-    numero_contenedor = models.CharField("Número de Contenedor", max_length=50)
+    numero_booking = models.CharField("Número de Booking", max_length=50, default="sin booking")
+    numero_contenedor = models.CharField("Número de Contenedor", max_length=50, null=True)
     
     exportador = models.TextField("Exportador", blank=True, null=True)
     consignatario = models.TextField("Consignatario", blank=True, null=True)
     notificar_a = models.TextField("Notificar a", blank=True, null=True)
     
-    puerto_embarque = models.CharField("Puerto de Destino", max_length=100)
-    puerto_destino = models.CharField("Puerto de Destino", max_length=100)
+    puerto_embarque = models.CharField("Puerto de Destino", max_length=100, null=True)
+    puerto_destino = models.CharField("Puerto de Destino", max_length=100, default="sin puertp")
     
-    descripcion_carga = models.TextField("Descripción de la Carga")
+    descripcion_carga = models.TextField("Descripción de la Carga", blank=True, null=True)
     instrucciones_especiales = models.TextField("Instrucciones Especiales", blank=True, null=True)
     
     estado = models.CharField("Estado", max_length=50, default="Pendiente de Revisión")
@@ -177,3 +177,5 @@ class PerfilUsuario(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.user.username}"
+
+
