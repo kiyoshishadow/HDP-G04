@@ -36,33 +36,41 @@ class ClienteForm(models.Model): # <<-- Aseg�rate que el nombre sea 'Cliente' 
 class InstruccionEmbarqueForm(forms.ModelForm):
     class Meta:
         model = InstruccionEmbarque
-        fields = '__all__' # Utilizar '__all__' es la forma m�s sencilla para ModelForms.
-
-        # Si quisieras especificar los campos, deber�an ser los nuevos nombres del modelo:
         fields = [
-             'shipper',
-             'consignee',
-             'notify_party',
-             'puerto_carga',
-             'puerto_descarga',
-             'fecha_embarque_estimada',
-             'descripcion_mercancia',
-             'cantidad_bultos',
-             'peso_bruto_kg',
-             'volumen_cbm',
-             'numero_contenedor',
-             'numero_sello',
-             'tipo_servicio',
-        #     # 'fecha_creacion', # Estos campos se manejan autom�ticamente
-        #     # 'ultima_actualizacion', # Estos campos se manejan autom�ticamente
-         ]
-
+            'numero_booking',
+            'numero_contenedor',
+            'exportador',
+            'consignatario',
+            'notificar_a',
+            'puerto_embarque',
+            'puerto_destino',
+            'descripcion_carga',
+            'instrucciones_especiales',
+        ]
         widgets = {
-            'fecha_embarque_estimada': forms.DateInput(attrs={'type': 'date'}),
-            'descripcion_mercancia': forms.Textarea(attrs={'rows': 4}),
-            # Puedes seguir a�adiendo m�s widgets si lo necesitas:
-             'instrucciones_especiales': forms.Textarea(attrs={'rows': 3}),
+            'exportador': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'consignatario': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'notificar_a': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'descripcion_carga': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'instrucciones_especiales': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'numero_booking': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: HLBU1234567'}),
+            'numero_contenedor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: HLBU1234567'}),
+            'puerto_embarque': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Guayaquil, Ecuador'}),
+            'puerto_destino': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Callao, Perú'}),
         }
+        labels = {
+            'numero_booking': 'Número de Booking *',
+            'numero_contenedor': 'Número de Contenedor *',
+            'exportador': 'Exportador *',
+            'consignatario': 'Consignatario *',
+            'notificar_a': 'Notificar a',
+            'puerto_embarque': 'Puerto de Embarque *',
+            'puerto_destino': 'Puerto de Destino *',
+            'descripcion_carga': 'Descripción de la Carga *',
+            'instrucciones_especiales': 'Instrucciones Especiales',
+        }
+
+
 
 
 class ReservaCargaForm(forms.ModelForm):

@@ -3,6 +3,7 @@ Definition of views.
 """
 
 from datetime import datetime
+from pickle import TRUE
 from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
 from django.http import HttpRequest, JsonResponse # type: ignore
 from django.contrib import messages # type: ignore
@@ -68,7 +69,12 @@ def crear_instruccion_embarque(request):
     return render(request, 'app/InstruccionEmbarque.html', {'form': form})
 
 def confirmacion_instruccion(request):
+    return render(request, 'app/ConfirmacionEmbarque.html'), ({"form": form, "submitSuccess": submit_success})
+
+
+def confirmacion_instruccion(request):
     return render(request, 'app/ConfirmacionEmbarque.html')
+
 
 def crear_reserva(request):
     print("Método de solicitud:", request.method)

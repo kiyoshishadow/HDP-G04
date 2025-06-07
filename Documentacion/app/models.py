@@ -17,38 +17,25 @@ class Cliente(models.Model):
         return self.nombre
 
 class InstruccionEmbarque(models.Model):
-    # Informaci�n de las partes
-    shipper = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='instrucciones_como_shipper', verbose_name="Remitente")
-    consignee = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='instrucciones_como_consignee', verbose_name="Consignatario")
-    notify_party = models.ForeignKey(Cliente, on_delete=models.SET_NULL, related_name='instrucciones_como_notify_party', null=True, blank=True, verbose_name="Parte a Notificar")
-
-    # Informaci�n de la ruta
-    puerto_carga = models.CharField(max_length=100, verbose_name="Puerto de Carga (POL)")
-    puerto_descarga = models.CharField(max_length=100, verbose_name="Puerto de Descarga (POD)")
-    fecha_embarque_estimada = models.DateField(verbose_name="Fecha de Embarque Estimada")
-
-    # Informaci�n de la carga
-    descripcion_mercancia = models.TextField(verbose_name="Descripcion de la Mercancia")
-    cantidad_bultos = models.IntegerField(verbose_name="Cantidad de Bultos")
-    peso_bruto_kg = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Peso Bruto (KG)")
-    volumen_cbm = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Volumen (CBM)")
-
-    # Informaci�n del contenedor (opcional)
-    numero_contenedor = models.CharField(max_length=15, blank=True, null=True, verbose_name="Numero de Contenedor")
-    numero_sello = models.CharField(max_length=15, blank=True, null=True, verbose_name="Numero de Sello")
-    tipo_servicio = models.CharField(max_length=50, choices=[('FCL', 'Full Container Load'), ('LCL', 'Less than Container Load')], verbose_name="Tipo de Servicio")
-
+   
+    numero_booking = models.CharField("Número de Booking", max_length=50)
+    numero_contenedor = models.CharField("Número de Contenedor", max_length=50)
+    
+    exportador = models.TextField("Exportador", blank=True, null=True)
+    consignatario = models.TextField("Consignatario", blank=True, null=True)
+    notificar_a = models.TextField("Notificar a", blank=True, null=True)
+    
+    puerto_embarque = models.CharField("Puerto de Destino", max_length=100)
+    puerto_destino = models.CharField("Puerto de Destino", max_length=100)
+    
+    descripcion_carga = models.TextField("Descripción de la Carga")
+    instrucciones_especiales = models.TextField("Instrucciones Especiales", blank=True, null=True)
+    
+    estado = models.CharField("Estado", max_length=50, default="Pendiente de Revisión")
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    ultima_actualizacion = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Instruccion de Embarque"
-        verbose_name_plural = "Instrucciones de Embarque"
-        # Agregamos ordering para el orden predeterminado en el admin/consultas
-        ordering = ['-fecha_creacion']
 
     def __str__(self):
-        return f"IE #{self.id} - {self.shipper.nombre} a {self.consignee.nombre}"
+        return f"{self.numero_booking} - {self.numero_contenedor}"
 
 class ReservaCarga(models.Model):
     # Información del Solicitante
