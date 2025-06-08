@@ -162,7 +162,7 @@ class RegistroUsuarioForm(forms.ModelForm):
 class PerfilUsuarioForm(forms.ModelForm):
     class Meta:
         model = PerfilUsuario
-        fields = ['country_code', 'phone', 'company', 'tax_id', 'address', 'city', 'postal_code', 'country']
+        fields = ['country_code', 'phone', 'company', 'tax_id', 'address', 'city', 'postal_code']
         widgets = {
             'country_code': forms.Select(attrs={'class': 'form-select'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
@@ -171,7 +171,6 @@ class PerfilUsuarioForm(forms.ModelForm):
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
-            'country': forms.Select(attrs={'class': 'form-select'}),
         }
 
 

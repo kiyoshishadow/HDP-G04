@@ -5,7 +5,9 @@ Definition of models.
 # Documentacion/models.py
 
 from django.db import models # type: ignore # <<-- Asegrate de que esta lnea est aqu!
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User # type: ignore
+import pycountry # type: ignore
+import phonenumbers # type: ignore
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=255)
@@ -38,6 +40,7 @@ class InstruccionEmbarque(models.Model):
         return f"{self.numero_booking} - {self.numero_contenedor}"
 
 class ReservaCarga(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservas', null=True, blank=True)
     # Información del Solicitante
     nombre_empresa_solicitante = models.CharField("Nombre Empresa Solicitante / Contacto", max_length=255)
     id_cliente_fk = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Cliente Asociado (Opcional)")
@@ -150,19 +153,19 @@ class ReservaCarga(models.Model):
     def __str__(self):
         return f"Reserva #{self.pk} - {self.nombre_empresa_solicitante} - {self.puerto_origen} a {self.puerto_destino}"
 
-COUNTRY_CODE_CHOICES = [
-    ("+34", "+34 España"),
-    ("+52", "+52 México"),
-    ("+57", "+57 Colombia"),
-    ("+1", "+1 USA"),
-]
+def get_all_country_code_choices():
+    countries = list(pycountry.countries)
+    choices = set()
+    for country in countries:
+        try:
+            code = phonenumbers.country_code_for_region(country.alpha_2)
+            if code:
+                choices.add((f"+{code}", f"+{code} {country.name}"))
+        except Exception:
+            continue
+    return sorted(list(choices), key=lambda x: x[1])
 
-COUNTRY_CHOICES = [
-    ("España", "España"),
-    ("México", "México"),
-    ("Colombia", "Colombia"),
-    ("Estados Unidos", "Estados Unidos"),
-]
+COUNTRY_CODE_CHOICES = get_all_country_code_choices()
 
 class PerfilUsuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -173,7 +176,6 @@ class PerfilUsuario(models.Model):
     address = models.CharField("Dirección de la calle / Número", max_length=255)
     city = models.CharField("Ciudad", max_length=100)
     postal_code = models.CharField("Código postal", max_length=20)
-    country = models.CharField("País", max_length=100, choices=COUNTRY_CHOICES)
 
     def __str__(self):
         return f"Perfil de {self.user.username}"

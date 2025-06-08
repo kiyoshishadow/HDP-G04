@@ -85,15 +85,13 @@ def crear_reserva(request):
         print("Formulario instanciado:", form)
         if form.is_valid():
             print("Formulario válido. Guardando...")
-            form.save()
+            reserva = form.save(commit=False)
+            reserva.usuario = request.user
+            reserva.save()
             print("Datos guardados.")
-            # Redirigir a una página de éxito o mostrar un mensaje
-            # Considera redirigir a una URL específica después de guardar
-            # return redirect('nombre_de_tu_pagina_de_exito')
             return render(request, 'app/crear_reserva.html', {'form': form, 'success': True})
         else:
             print("Formulario no válido. Errores:", form.errors)
-            # Mostrar errores en el formulario
             return render(request, 'app/crear_reserva.html', {'form': form, 'errors': form.errors})
     else:
         print("Solicitud GET. Mostrando formulario vacío.")
@@ -102,7 +100,10 @@ def crear_reserva(request):
 
 def mis_reservas(request):
     """Vista para mostrar las reservas del usuario (excepto canceladas)."""
-    reservas = ReservaCarga.objects.exclude(estado_reserva='cancelada').order_by('-fecha_creacion_reserva')
+    if request.user.username == "admin":
+        reservas = ReservaCarga.objects.exclude(estado_reserva='cancelada').order_by('-fecha_creacion_reserva')
+    else:
+        reservas = ReservaCarga.objects.filter(usuario=request.user).exclude(estado_reserva='cancelada').order_by('-fecha_creacion_reserva')
     return render(
         request,
         'app/mis_reservas.html',
