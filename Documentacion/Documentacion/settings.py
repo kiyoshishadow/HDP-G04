@@ -23,10 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '811297ed-677b-4153-a849-7ff1a59c7c47'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = True  # Cambiar a False en producción
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '100.104.221.2',   # Tu IP de Tailscale
+    'kiyo',            # Nombre de tu máquina en Tailscale
+    'kiyo.mshome.net', # Hostname que aparece en logs
+    # '*.ts.net'       # Opcional: dominio genérico Tailscale
+]
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
@@ -115,8 +120,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Donde se recolectarán los estáticos para producción
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'app/static'),  # Ruta a tus archivos estáticos originales
+]
 # Login URL configuration
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
