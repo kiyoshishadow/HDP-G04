@@ -7,6 +7,8 @@
     {# Cargar la etiqueta 'static' para servir archivos estáticos #}
     {% load static %}
 
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'app/Imagenes/icon.png' %}" />
+
     {# Título dinámico que puede ser sobrescrito por plantillas hijas #}
     <title>{% block title %}My Django Application{% endblock %}</title>
 
@@ -24,7 +26,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             {# Enlace de la marca/logo de la navbar #}
-            <a class="navbar-brand" href="/">Inicio</a> {# Considera usar {% url 'home' %} si tienes una URL con nombre 'home' #}
+            <a class="navbar-brand" href="{% url 'home' %}">Inicio</a> {# Considera usar {% url 'home' %} si tienes una URL con nombre 'home' #}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -42,13 +44,6 @@
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
-                <ul class="navbar-nav ms-2">
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light" href="#">
-                            <i class="fa-solid fa-right-to-bracket"></i> Login
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
     </nav>
@@ -58,80 +53,107 @@
             <aside class="col-md-3 col-lg-2 bg-dark text-white p-0 sidebar">
                 <nav class="nav flex-column mt-3">
 
-                    {# Dropdown para "Cotizar" #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="cotizarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-sack-dollar"></i> Cotizar
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cotizarDropdown">
-                            <li><a class="dropdown-item" href="#">Nueva Cotización</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Cotizaciones</a></li>
-                            <li><a class="dropdown-item" href="#">Tarifas</a></li>
-                            <li><a class="dropdown-item" href="#">Tipo de cambio</a></li>
-                        </ul>
-                    </li>
+                    {# Menú dinámico: admin ve todo, usuario normal ve menú limitado #}
+                    {% if user.is_authenticated %}
+                        {% if user.username == "admin" %}
+                            {# Menú COMPLETO para admin #}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="cotizarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-sack-dollar"></i> Cotizar
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cotizarDropdown">
+                                    <li><a class="dropdown-item" href="#">Nueva Cotización</a></li>
+                                    <li><a class="dropdown-item" href="#">Mis Cotizaciones</a></li>
+                                    <li><a class="dropdown-item" href="#">Tarifas</a></li>
+                                    <li><a class="dropdown-item" href="#">Tipo de cambio</a></li>
+                                </ul>
+                            </li>
 
-                    <a class="nav-link" href="#"><i class="fa-solid fa-file-invoice me-2"></i> Itinerario</a>
+                            <a class="nav-link" href="#"><i class="fa-solid fa-file-invoice me-2"></i> Itinerario</a>
 
-                    {# Dropdown para "Reservas" #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="reservasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-box me-2"></i> Reservas
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reservasDropdown">
-                            <li><a class="dropdown-item" href="#">Crear Reserva</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Reservas</a></li>
-                            <li><a class="dropdown-item" href="#">Modificar Reserva</a></li>
-                            <li><a class="dropdown-item" href="#">Eliminar Reserva</a></li>
-                            <li><a class="dropdown-item" href="#">Servicios Adicoinales</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Historial de Reservas</a></li>
-                        </ul>
-                    </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="reservasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-box me-2"></i> Reservas
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reservasDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'crear_reserva' %}">Crear Reserva</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'servicios_adicionales' %}">Servicios Adicionales</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'historial_reservas' %}">Historial de Reservas</a></li>
+                                </ul>
+                            </li>
 
-                    {# Dropdown para "Documentacion" #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="trackingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i <i class="fa-solid fa-folder-open"></i></i> Documentacion
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
-                            <li><a class="dropdown-item" href="#">Mis Embarques</a></li>
-                            <li><a class="dropdown-item" href="#">Instrucciones de Embarque</a></li>
-                            <li><a class="dropdown-item" href="#">Aprobar Borrador BL</a></li>
-                            <li><a class="dropdown-item" href="#">Documentos de Embarque</a></li>
-                            <li><a class="dropdown-item" href="#">Reclamos</a></li>
-                        </ul>
-                    </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="trackingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-folder-open"></i> Documentacion
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
+                                    <li><a class="dropdown-item" href="#">Mis Embarques</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'crear_instruccion' %}">Instrucciones de Embarque</a></li>
+                                    <li><a class="dropdown-item" href="#">Aprobar Borrador BL</a></li>
+                                    <li><a class="dropdown-item" href="#">Documentos de Embarque</a></li>
+                                    <li><a class="dropdown-item" href="#">Reclamos</a></li>
+                                </ul>
+                            </li>
 
+                            <a class="nav-link" href="#"><i class="fa-solid fa-chart-line me-2"></i> Finanzas</a>
 
-                    <a class="nav-link" href="#"><i class="fa-solid fa-chart-line me-2"></i> Finanzas</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="trackingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-map-location-dot"></i> Tracking
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'mapa' %}">Mapa</a></li>
+                                    <li><a class="dropdown-item" href="#">Seguimiento por Booking</a></li>
+                                    <li><a class="dropdown-item" href="#">Seguimiento por Contenedor</a></li>
+                                    <li><a class="dropdown-item" href="#">Alertas de Tracking</a></li>
+                                    <li><a class="dropdown-item" href="#">Historial de Tracking</a></li>
+                                </ul>
+                            </li>
 
-                    {# Dropdown para "Tracking" #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="trackingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-map-location-dot"></i> Tracking
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
-                            <li><a class="dropdown-item" href="#">Seguimiento por Booking</a></li>
-                            <li><a class="dropdown-item" href="#">Seguimiento por Contenedor</a></li>
-                            <li><a class="dropdown-item" href="#">Alertas de Tracking</a></li>
-                            <li><a class="dropdown-item" href="#">Historial de Tracking</a></li>
-                        </ul>
-                    </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="ImportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-map-location-dot"></i>Importacion</a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
+                                    <li><a class="dropdown-item" href="#">Resumen Importacion</a></li>
+                                </ul>
+                            </li>
 
-                    {# Dropdown para "Importacion" #}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="ImportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-map-location-dot"></i>Importacion</a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
-                            <li><a class="dropdown-item" href="#">Resumen Importacion</a></li>
-                        </ul>
-                    </li>
+                            <hr class="border-secondary mx-3">
 
-                    <hr class="border-secondary mx-3">
-
-                    <a class="nav-link" href="#"><i class="fa-solid fa-circle-question me-2"></i> Ayuda</a>
-                    <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión</a>
+                            <a class="nav-link" href="#"><i class="fa-solid fa-circle-question me-2"></i> Ayuda</a>
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión
+                            </a>
+                        {% else %}
+                            {# Menú LIMITADO para usuarios normales #}
+                            <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house me-2"></i> Inicio</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="reservasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-box me-2"></i> Reservas
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reservasDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'crear_reserva' %}">Crear Reserva</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'servicios_adicionales' %}">Servicios Adicionales</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="trackingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-map-location-dot"></i> Tracking
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="trackingDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'mapa' %}">Mapa</a></li>
+                                </ul>
+                            </li>
+                            <hr class="border-secondary mx-3">
+                            <a class="nav-link" href="#"><i class="fa-solid fa-circle-question me-2"></i> Ayuda</a>
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión
+                            </a>
+                        {% endif %}
+                    {% endif %}
                 </nav>
             </aside>
 

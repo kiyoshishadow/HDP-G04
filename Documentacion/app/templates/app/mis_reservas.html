@@ -1,0 +1,237 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold">Mis Reservas</h2>
+    
+    {% if reservas %}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Reserva</th>
+                            <th>Empresa</th>
+                            <th>Detalles de Carga</th>
+                            <th>Ruta y Fechas</th>
+                            <th>Contenedor</th>
+                            <th>Servicios</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in reservas %}
+                        <tr>
+                            <td class="fw-semibold">#{{ reserva.id }}</td>
+                            <td>
+                                <span class="fw-semibold">{{ reserva.nombre_empresa_solicitante }}</span><br>
+                                <small class="text-muted">{{ reserva.email_contacto }}</small>
+                            </td>
+                            <td>
+                                <span class="fw-semibold">{{ reserva.tipo_mercancia }}</span><br>
+                                <span class="text-muted">{{ reserva.peso_bruto_total }} {{ reserva.unidad_peso }}</span><br>
+                                <span class="text-muted">{{ reserva.numero_bultos }} bultos</span>
+                            </td>
+                            <td>
+                                <span class="fw-semibold">Origen:</span> {{ reserva.puerto_origen }}<br>
+                                <span class="fw-semibold">Destino:</span> {{ reserva.puerto_destino }}<br>
+                                <span class="fw-semibold">ETD:</span> {{ reserva.fecha_embarque|date:"d/m/Y" }}
+                            </td>
+                            <td>
+                                <span class="fw-semibold">{{ reserva.tipo_contenedor }}</span><br>
+                                <span class="text-muted">Cant: {{ reserva.cantidad_contenedores }}</span>
+                            </td>
+                            <td>
+                                {% if reserva.seguro_carga %}<span class="badge bg-info text-dark mb-1">Seguro</span> {% endif %}
+                                {% if reserva.despacho_origen %}<span class="badge bg-primary mb-1">Despacho Origen</span> {% endif %}
+                                {% if reserva.despacho_destino %}<span class="badge bg-primary mb-1">Despacho Destino</span> {% endif %}
+                                {% if reserva.transporte_origen %}<span class="badge bg-secondary mb-1">Transporte Origen</span> {% endif %}
+                                {% if reserva.transporte_destino %}<span class="badge bg-secondary mb-1">Transporte Destino</span> {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge px-3 py-2
+                                    {% if reserva.estado_reserva == 'cancelada' %}bg-danger
+                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}bg-success
+                                    {% else %}bg-primary{% endif %}">
+                                    {% if reserva.estado_reserva == 'cancelada' %}
+                                        Cancelada
+                                    {% elif reserva.fecha_limite_llegada and reserva.fecha_limite_llegada <= now.date and reserva.estado_reserva != 'cancelada' %}
+                                        Completada
+                                    {% else %}
+                                        En Curso
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                            style="width: 32px; height: 32px;" title="Ver detalles"
+                                            data-bs-toggle="modal" data-bs-target="#detalleReserva{{ reserva.id }}">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <a href="{% url 'editar_reserva' reserva.id %}" class="btn btn-warning rounded-circle d-flex align-items-center justify-content-center me-2"
+                                       style="width: 32px; height: 32px;" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width: 32px; height: 32px;" title="Eliminar"
+                                            data-bs-toggle="modal" data-bs-target="#eliminarReserva{{ reserva.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Modal de Detalles -->
+                                <div class="modal fade" id="detalleReserva{{ reserva.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-light border-bottom-0">
+                                                <h5 class="modal-title fw-bold">
+                                                    <i class="fas fa-clipboard-list me-2 text-primary"></i>
+                                                    Detalles de Reserva #{{ reserva.id }}
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row g-4">
+                                                    <div class="col-md-6 border-end">
+                                                        <h6 class="fw-semibold mb-3 text-primary">
+                                                            <i class="fas fa-user-tie me-1"></i> Información del Solicitante
+                                                        </h6>
+                                                        <p class="mb-1"><i class="fas fa-building me-1"></i> <strong>Empresa:</strong> {{ reserva.nombre_empresa_solicitante }}</p>
+                                                        <p class="mb-1"><i class="fas fa-id-badge me-1"></i> <strong>ID Cliente:</strong> {{ reserva.id_cliente_texto|default:'-' }}</p>
+                                                        <p class="mb-1"><i class="fas fa-envelope me-1"></i> <strong>Email:</strong> {{ reserva.email_contacto }}</p>
+                                                        <p class="mb-3"><i class="fas fa-phone me-1"></i> <strong>Teléfono:</strong> {{ reserva.telefono_contacto }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-file-invoice-dollar me-1"></i> Referencia de Cotización
+                                                        </h6>
+                                                        <p class="mb-3"><strong>Número de Cotización:</strong> {{ reserva.numero_cotizacion|default:'-' }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-boxes me-1"></i> Detalles de la Carga
+                                                        </h6>
+                                                        <p class="mb-1"><strong>Descripción:</strong> {{ reserva.descripcion_mercancia }}</p>
+                                                        <p class="mb-1"><strong>Tipo:</strong> {{ reserva.get_tipo_mercancia_display }}</p>
+                                                        <p class="mb-1"><strong>Peso:</strong> {{ reserva.peso_bruto_total }} {{ reserva.unidad_peso }}</p>
+                                                        <p class="mb-1"><strong>Volumen:</strong> {{ reserva.volumen_total|default:'-' }} CBM</p>
+                                                        <p class="mb-1"><strong>Bultos:</strong> {{ reserva.numero_bultos }}</p>
+                                                        <p class="mb-1"><strong>Código HS:</strong> {{ reserva.codigo_hs|default:'-' }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-cube me-1"></i> Detalles del Contenedor
+                                                        </h6>
+                                                        <p class="mb-1"><strong>Tipo:</strong> {{ reserva.tipo_contenedor }}</p>
+                                                        <p class="mb-1"><strong>Cantidad:</strong> {{ reserva.cantidad_contenedores }}</p>
+                                                        <p class="mb-3"><strong>Condiciones Especiales:</strong> {{ reserva.condiciones_especiales_contenedor|default:'-' }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-route me-1"></i> Ruta y Fechas
+                                                        </h6>
+                                                        <p class="mb-1"><strong>Origen:</strong> {{ reserva.puerto_origen }}</p>
+                                                        <p class="mb-1"><strong>Destino:</strong> {{ reserva.puerto_destino }}</p>
+                                                        <p class="mb-1"><strong>Transbordo:</strong> {{ reserva.puerto_transbordo|default:'-' }}</p>
+                                                        <p class="mb-1"><strong>ETD:</strong> {{ reserva.fecha_embarque|date:'d/m/Y' }}</p>
+                                                        <p class="mb-1"><strong>Fecha Límite de Llegada:</strong> {{ reserva.fecha_limite_llegada|date:'d/m/Y'|default:'-' }}</p>
+                                                        <p class="mb-3"><strong>Viaje/Buque:</strong> {{ reserva.viaje_buque|default:'-' }}</p>
+                                                    </div>
+                                                    <div class="col-md-6" style="padding-right: 24px;">
+                                                        <h6 class="fw-semibold mb-3 text-primary">
+                                                            <i class="fas fa-users me-1"></i> Partes Involucradas
+                                                        </h6>
+                                                        <p class="mb-1"><i class="fas fa-user me-1"></i> <strong>Shipper:</strong> {{ reserva.shipper_nombre }}</p>
+                                                        <p class="mb-1"><strong>Dirección:</strong> {{ reserva.shipper_direccion }}</p>
+                                                        <p class="mb-1"><strong>Teléfono:</strong> {{ reserva.shipper_telefono }}</p>
+                                                        <p class="mb-1"><strong>Email:</strong> {{ reserva.shipper_email }}</p>
+                                                        <hr>
+                                                        <p class="mb-1"><i class="fas fa-user-check me-1"></i> <strong>Consignee:</strong> {{ reserva.consignee_nombre }}</p>
+                                                        <p class="mb-1"><strong>Dirección:</strong> {{ reserva.consignee_direccion }}</p>
+                                                        <p class="mb-1"><strong>Teléfono:</strong> {{ reserva.consignee_telefono }}</p>
+                                                        <p class="mb-1"><strong>Email:</strong> {{ reserva.consignee_email }}</p>
+                                                        <hr>
+                                                        {% if reserva.notify_nombre %}
+                                                        <p class="mb-1"><i class="fas fa-bell me-1"></i> <strong>Notify:</strong> {{ reserva.notify_nombre }}</p>
+                                                        <p class="mb-1"><strong>Dirección:</strong> {{ reserva.notify_direccion }}</p>
+                                                        <p class="mb-1"><strong>Teléfono:</strong> {{ reserva.notify_telefono }}</p>
+                                                        <p class="mb-1"><strong>Email:</strong> {{ reserva.notify_email }}</p>
+                                                        <hr>
+                                                        {% endif %}
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-cogs me-1"></i> Servicios Adicionales
+                                                        </h6>
+                                                        <p class="mb-1">
+                                                            {% if reserva.seguro_carga %}<span class="badge bg-info text-dark mb-1">Seguro de Carga</span> {% endif %}
+                                                            {% if reserva.despacho_origen %}<span class="badge bg-primary mb-1">Despacho Origen</span> {% endif %}
+                                                            {% if reserva.despacho_destino %}<span class="badge bg-primary mb-1">Despacho Destino</span> {% endif %}
+                                                            {% if reserva.transporte_origen %}<span class="badge bg-secondary mb-1">Transporte Origen</span> {% endif %}
+                                                            {% if reserva.transporte_destino %}<span class="badge bg-secondary mb-1">Transporte Destino</span> {% endif %}
+                                                        </p>
+                                                        <p class="mb-3"><strong>Otros servicios:</strong> {{ reserva.otros_servicios|default:'-' }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-comment-dots me-1"></i> Instrucciones Especiales / Comentarios
+                                                        </h6>
+                                                        <p class="mb-1">{{ reserva.instrucciones_especiales|default:"Sin instrucciones especiales" }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary mt-3">
+                                                            <i class="fas fa-snowflake me-1"></i> Para Carga Refrigerada (si aplica)
+                                                        </h6>
+                                                        <p class="mb-1"><strong>Temperatura Requerida:</strong> {{ reserva.temperatura_requerida|default:'-' }}</p>
+                                                        <p class="mb-1"><strong>Unidad:</strong> {{ reserva.unidad_temperatura|default:'-' }}</p>
+                                                        <p class="mb-1"><strong>Ventilación Requerida:</strong> {% if reserva.ventilacion_requerida %}Sí{% else %}No{% endif %}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary mt-3">
+                                                            <i class="fas fa-exclamation-triangle me-1"></i> Para Carga Peligrosa (si aplica)
+                                                        </h6>
+                                                        <p class="mb-1"><strong>Número UN:</strong> {{ reserva.numero_un|default:'-' }}</p>
+                                                        <p class="mb-1"><strong>IMO Class:</strong> {{ reserva.imo_class|default:'-' }}</p>
+                                                        <p class="mb-3"><strong>Packing Group:</strong> {{ reserva.packing_group|default:'-' }}</p>
+                                                        <h6 class="fw-semibold mb-2 text-primary">
+                                                            <i class="fas fa-file-alt me-1"></i> Notas sobre Documentación
+                                                        </h6>
+                                                        <p class="mb-0">{{ reserva.notas_documentacion|default:'-' }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer bg-light border-top-0">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal de Eliminar -->
+                                <div class="modal fade" id="eliminarReserva{{ reserva.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger bg-opacity-10 border-bottom-0">
+                                                <h5 class="modal-title fw-bold text-danger">Confirmar Eliminación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>¿Estás seguro de que deseas eliminar la reserva <span class="fw-bold">#{{ reserva.id }}</span>?</p>
+                                                <p class="text-danger"><strong>Esta acción no se puede deshacer.</strong></p>
+                                            </div>
+                                            <div class="modal-footer bg-light border-top-0">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <form action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="fas fa-info-circle me-2"></i>
+        <div>
+            No tienes reservas registradas. 
+            <a href="{% url 'crear_reserva' %}" class="alert-link">¡Crea tu primera reserva aquí!</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

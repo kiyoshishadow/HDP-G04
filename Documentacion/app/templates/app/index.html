@@ -1,4 +1,5 @@
 {% extends "app/layout.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -10,21 +11,21 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="2000">
-            <img src="static/app/imagenes/imagen1.jpg" class="d-block w-100 mx-auto" alt="Transporte">
+            <img src="{% static 'app/Imagenes/imagen1.jpg' %}" class="d-block w-100 mx-auto" alt="Transporte">
             <div class="carousel-caption d-none d-md-block">
                 <h5 style="color:white">Mi Naviera</h5>
                 <p style="color:white">Hacemos que el comercio global ocurra</p>
             </div>
         </div>
         <div class="carousel-item" data-bs-interval="2000">
-            <img src="static/app/imagenes/imagen2.jpg" class="d-block w-100" alt="...">
+            <img src="{% static 'app/Imagenes/imagen2.jpg' %}" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Cleaning Future for Shipping</h5>
                 <p>Impulsar la sostenibilidad</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="static/app/imagenes/imagen3.webp" class="d-block w-100" alt="...">
+            <img src="{% static 'app/Imagenes/imagen3.webp' %}" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <a>Mas Informacion</a>
                 <p>Mejor Planificacion con datos en tiempo real...</p>
@@ -56,7 +57,7 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
         <div class="card h-100">
-            <img src="static/app/imagenes/imagen7.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'app/Imagenes/imagen7.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">24 de Mayo 2025</h5>
                 <p class="card-text">Mi Naviera presenta Promesas de Calidad mejoradas como parte de la Estrategia 2030</p>
@@ -68,7 +69,7 @@
     </div>
     <div class="col">
         <div class="card h-100">
-            <img src="static/app/imagenes/imagen6.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'app/Imagenes/imagen6.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">24 de Mayo 2025</h5>
                 <p class="card-text">La Asamblea General Anual de Mi Naviera aprueba todas las resoluciones propuestas</p>
@@ -80,10 +81,10 @@
     </div>
     <div class="col">
         <div class="card h-100">
-            <img src="static/app/imagenes/imagen8.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'app/Imagenes/imagen8.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">24 de Mayo 2025</h5>
-                <p class="card-text">Hapag-Lloyd publica cifras preliminares de negocios para el primer trimestre de 2025</p>
+                <p class="card-text">Mi Naviera publica cifras preliminares de negocios para el primer trimestre de 2025</p>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Last updated 3 mins ago</small>
