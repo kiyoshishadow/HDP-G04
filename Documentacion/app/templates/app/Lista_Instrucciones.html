@@ -1,0 +1,16 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="h3">{{ editar|yesno:"Editar Instrucción,Crear Nueva Instrucción" }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'lista_instrucciones' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

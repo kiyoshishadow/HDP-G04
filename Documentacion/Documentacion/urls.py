@@ -5,7 +5,8 @@ Definition of urls for Documentacion.
 from datetime import datetime
 from django.urls import path # type: ignore
 from django.contrib import admin # type: ignore
-from django.contrib.auth.views import LoginView, LogoutView # type: ignore
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic.base import View # type: ignore
 from app import forms, views
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -42,4 +43,7 @@ urlpatterns = [
     path('mapa/', views.mapa, name='mapa'),
     path('historial_reservas/', views.historial_reservas, name='historial_reservas'),
     path('autocomplete_puertos/', views.autocomplete_puertos_local, name='autocomplete_puertos'),
+    path('lista_instrucciones/', views.lista_instrucciones, name='lista_instrucciones'),
+    path('instrucciones/editar/<int:pk>/', views.editar_instruccion, name='editar_instruccion'),
+    path('instrucciones/aprobar/<int:pk>/', views.aprobar_instruccion, name='aprobar_instruccion'),
 ]

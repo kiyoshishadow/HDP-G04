@@ -3,6 +3,7 @@ Definition of views.
 """
 
 from datetime import datetime
+from pickle import TRUE
 from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
 from django.http import HttpRequest, JsonResponse # type: ignore
 from django.contrib import messages # type: ignore
@@ -13,8 +14,9 @@ import json
 import os
 from django.conf import settings
 
-from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm
-from .models import ReservaCarga
+from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm, InstruccionEmbarqueForm
+from .models import ReservaCarga, InstruccionEmbarque, PerfilUsuario
+from django.contrib import messages
 
 def home(request):
     """Renders the home page."""
@@ -68,7 +70,12 @@ def crear_instruccion_embarque(request):
     return render(request, 'app/InstruccionEmbarque.html', {'form': form})
 
 def confirmacion_instruccion(request):
+    return render(request, 'app/ConfirmacionEmbarque.html'), ({"form": form, "submitSuccess": submit_success})
+
+
+def confirmacion_instruccion(request):
     return render(request, 'app/ConfirmacionEmbarque.html')
+
 
 def crear_reserva(request):
     print("Método de solicitud:", request.method)
@@ -224,3 +231,29 @@ def autocomplete_puertos_local(request):
             if len(results) >= 10:
                 return JsonResponse({'results': results})
     return JsonResponse({'results': results})
+
+
+
+def lista_instrucciones(request):
+    instrucciones = InstruccionEmbarque.objects.all().order_by('-fecha_creacion')
+    return render(request, 'app/bill_of_lading.html', {'instrucciones': instrucciones})
+
+def editar_instruccion(request, pk):
+    instruccion = get_object_or_404(InstruccionEmbarque, pk=pk)
+    if request.method == 'POST':
+        form = InstruccionEmbarqueForm(request.POST, instance=instruccion)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'La instrucción fue actualizada correctamente.')
+            return redirect('lista_instrucciones')
+    else:
+        form = InstruccionEmbarqueForm(instance=instruccion)
+    return render(request, 'app/instruccionEmbarque.html', {'form': form, 'editar': True})
+
+def aprobar_instruccion(request, pk):
+    instruccion = get_object_or_404(InstruccionEmbarque, pk=pk)
+    instruccion.estado = 'Aprobado'
+    instruccion.save()
+    messages.success(request, 'La instrucción ha sido aprobada.')
+    return redirect('lista_instrucciones')
+
