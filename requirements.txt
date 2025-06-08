@@ -1,3 +1,6 @@
-requests
-
 django 
+django-widget-tweaks
+psycopg2-binary
+requests
+pycountry
+phonenumbers
