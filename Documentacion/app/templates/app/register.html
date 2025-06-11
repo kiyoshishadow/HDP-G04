@@ -1,94 +1,103 @@
 {% extends "app/login_base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center" style="background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed; background-size: cover;">
     <div class="row w-100 justify-content-center">
         <div class="col-12 col-md-7 col-lg-5">
-            <div class="bg-white p-4 rounded shadow-lg" style="opacity: 0.97;">
-                <h2 class="text-center mb-4" style="font-weight: bold;">Registrar cuenta</h2>
+            <div class="bg-white p-5 rounded shadow-lg" style="opacity: 0.95;">
+                <h2 class="text-center mb-4" style="font-weight: bold; color: #333;">Registrar cuenta</h2>
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-success">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
-                <form method="post" action=".">
+                <form method="post" action="." class="needs-validation" novalidate>
                     {% csrf_token %}
                     {{ user_form.non_field_errors }}
                     {{ perfil_form.non_field_errors }}
-                    <div class="mb-3">
-                        <label class="form-label">Nombre de pila</label>
-                        {{ user_form.first_name }}
-                        {{ user_form.first_name.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Apellido</label>
-                        {{ user_form.last_name }}
-                        {{ user_form.last_name.errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre de pila</label>
+                            {{ user_form.first_name|add_class:"form-control" }}
+                            {{ user_form.first_name.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Apellido</label>
+                            {{ user_form.last_name|add_class:"form-control" }}
+                            {{ user_form.last_name.errors }}
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nombre de usuario</label>
-                        {{ user_form.username }}
+                        {{ user_form.username|add_class:"form-control" }}
                         {{ user_form.username.errors }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        {{ user_form.email }}
+                        {{ user_form.email|add_class:"form-control" }}
                         {{ user_form.email.errors }}
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        {{ user_form.password }}
-                        {{ user_form.password.errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Contraseña</label>
+                            {{ user_form.password|add_class:"form-control" }}
+                            {{ user_form.password.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confirmar contraseña</label>
+                            {{ user_form.password2|add_class:"form-control" }}
+                            {{ user_form.password2.errors }}
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirmar contraseña</label>
-                        {{ user_form.password2 }}
-                        {{ user_form.password2.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Código del país</label>
-                        {{ perfil_form.country_code }}
-                        {{ perfil_form.country_code.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Número de teléfono</label>
-                        {{ perfil_form.phone }}
-                        {{ perfil_form.phone.errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Código del país</label>
+                            {{ perfil_form.country_code|add_class:"form-control" }}
+                            {{ perfil_form.country_code.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de teléfono</label>
+                            {{ perfil_form.phone|add_class:"form-control" }}
+                            {{ perfil_form.phone.errors }}
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nombre de empresa</label>
-                        {{ perfil_form.company }}
+                        {{ perfil_form.company|add_class:"form-control" }}
                         {{ perfil_form.company.errors }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Impuesto de Sociedades / Registro / Número de IVA</label>
-                        {{ perfil_form.tax_id }}
+                        {{ perfil_form.tax_id|add_class:"form-control" }}
                         {{ perfil_form.tax_id.errors }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Dirección de la calle / Número</label>
-                        {{ perfil_form.address }}
+                        {{ perfil_form.address|add_class:"form-control" }}
                         {{ perfil_form.address.errors }}
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ciudad</label>
-                        {{ perfil_form.city }}
-                        {{ perfil_form.city.errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ciudad</label>
+                            {{ perfil_form.city|add_class:"form-control" }}
+                            {{ perfil_form.city.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Código postal</label>
+                            {{ perfil_form.postal_code|add_class:"form-control" }}
+                            {{ perfil_form.postal_code.errors }}
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Código postal</label>
-                        {{ perfil_form.postal_code }}
-                        {{ perfil_form.postal_code.errors }}
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary text-white fw-bold" style="background-color: #007bff; border: none;">Registrar</button>
                     </div>
-                    <div class="d-grid mb-2">
-                        <button type="submit" class="btn btn-warning text-white fw-bold" style="background-color: #ff6600; border: none;">Continuar</button>
-                    </div>
-                    <div class="text-center mt-2">
-                        <a href="/" class="text-warning">Cancelar</a>
+                    <div class="text-center">
+                        <a href="/" class="text-secondary">Cancelar</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

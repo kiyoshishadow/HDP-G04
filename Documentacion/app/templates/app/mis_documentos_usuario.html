@@ -1,0 +1,61 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="h3 mb-4">Mis Documentos</h1>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">BL de mis reservas</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Número de Booking</th>
+                        <th>Contenedor</th>
+                        <th>Exportador</th>
+                        <th>Consignatario</th>
+                        <th>Puerto Origen</th>
+                        <th>Puerto Destino</th>
+                        <th>Fecha Creación</th>
+                        <th>Estado</th>
+                        <th>Descargar PDF</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documentos %}
+                    <tr>
+                        <td>{{ doc.numero_booking }}</td>
+                        <td>{{ doc.numero_contenedor }}</td>
+                        <td>{{ doc.exportador|truncatechars:20 }}</td>
+                        <td>{{ doc.consignatario|truncatechars:20 }}</td>
+                        <td>{{ doc.puerto_embarque }}</td>
+                        <td>{{ doc.puerto_destino }}</td>
+                        <td>{{ doc.fecha_creacion|date:'d/m/Y' }}</td>
+                        <td>
+                            <span class="badge bg-{% if doc.estado == 'Aprobado' %}success{% elif doc.estado == 'Pendiente de Revisión' %}warning text-dark{% else %}danger{% endif %}">
+                                {{ doc.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if doc.documentos.exists %}
+                                <a href="{% url 'descargar_documentos_zip' doc.pk %}" class="btn btn-sm btn-success">
+                                    <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                                </a>
+                            {% else %}
+                                <span class="text-muted small">Sin documentos</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'detalle_embarque' doc.pk %}" class="btn btn-sm btn-outline-info">Ver Detalle</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="10" class="text-center">No hay documentos disponibles.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

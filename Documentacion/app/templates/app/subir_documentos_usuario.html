@@ -1,0 +1,159 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="h3 mb-4">Subir Documentos</h1>
+    <form method="get" class="mb-4">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Selecciona una Reserva</h5>
+            </div>
+            <div class="card-body">
+                <select name="reserva_id" id="id_reserva_id" class="form-select mb-3" required onchange="this.form.submit()">
+                    <option value="">Selecciona una reserva</option>
+                    {% for reserva in reservas %}
+                        <option value="{{ reserva.id }}" {% if reserva_seleccionada and reserva_seleccionada.id == reserva.id %}selected{% endif %}>
+                            {{ reserva }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+    {% if reserva_seleccionada and embarque %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Datos del Embarque</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Número de Booking:</strong> {{ embarque.numero_booking }}</p>
+            <p><strong>Número de Contenedor:</strong> {{ embarque.numero_contenedor }}</p>
+            <p><strong>Exportador:</strong> {{ embarque.exportador }}</p>
+            <p><strong>Consignatario:</strong> {{ embarque.consignatario }}</p>
+            <p><strong>Puerto de Embarque:</strong> {{ embarque.puerto_embarque }}</p>
+            <p><strong>Puerto de Destino:</strong> {{ embarque.puerto_destino }}</p>
+            <p><strong>Estado:</strong> {{ embarque.estado }}</p>
+            <p><strong>Fecha de Creación:</strong> {{ embarque.fecha_creacion|date:'d/m/Y' }}</p>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Documentos Asociados</h5>
+        </div>
+        <div class="card-body">
+            {% if documentos %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Archivo</th>
+                            <th>Estado</th>
+                            <th>Observaciones</th>
+                            <th>Fecha de Subida</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documentos %}
+                        <tr>
+                            <td>{{ doc.get_tipo_display }}</td>
+                            <td>
+                                {% if doc.archivo %}
+                                    <a href="{{ doc.archivo.url }}" target="_blank" class="btn btn-sm btn-outline-success">Ver PDF</a>
+                                {% else %}
+                                    <span class="text-muted">No disponible</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ doc.get_estado_display }}</td>
+                            <td>{{ doc.observaciones|default:'-' }}</td>
+                            <td>{{ doc.fecha_subida|date:'d/m/Y' }}</td>
+                            <td>
+                                <form method="post" action="{% url 'eliminar_documento' doc.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento?');">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No hay documentos asociados a este embarque.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card documento-upload-card shadow rounded-3 border-0">
+        <div class="card-header bg-dark text-white rounded-top-3">
+            <h5 class="mb-0"><i class="bi bi-upload"></i> Subir Nuevo Documento</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-4 align-items-center mb-3">
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">{{ form.tipo.label }}</label>
+                        {{ form.tipo }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">{{ form.archivo.label }}</label>
+                        {{ form.archivo }}
+                    </div>
+                </div>
+                <div class="row g-4 align-items-center mb-3">
+                    <div class="col-md-6 mb-2">
+                        <label for="id_numero_referencia" class="form-label">Número de Referencia</label>
+                        <input type="text" name="numero_referencia" id="id_numero_referencia" class="form-control" value="{{ form.numero_referencia.value|default:numero_referencia_sugerido|default:'' }}" placeholder="Ej: COT-GLSA-2025-0123">
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label class="form-label">{{ form.fecha_emision.label }}</label>
+                        {{ form.fecha_emision }}
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label class="form-label">{{ form.fecha_vencimiento.label }}</label>
+                        {{ form.fecha_vencimiento }}
+                    </div>
+                </div>
+                <div class="row g-4 align-items-center mb-3">
+                    <div class="col-md-3 mb-2">
+                        <div class="form-check">
+                            {{ form.es_obligatorio }}
+                            <label class="form-check-label">{{ form.es_obligatorio.label }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="form-check">
+                            {{ form.es_original }}
+                            <label class="form-check-label">{{ form.es_original.label }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.observaciones.label }}</label>
+                    {{ form.observaciones }}
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-doc px-4 py-2 shadow-sm"><i class="bi bi-cloud-arrow-up"></i> Subir Documento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <div class="mt-4">
+        <a href="{% url 'mis_embarques' %}" class="btn btn-secondary">Volver a Mis Embarques</a>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reservaSelect = document.getElementById('id_reserva');
+    const numeroReferencia = document.getElementById('id_numero_referencia');
+    reservaSelect.addEventListener('change', function() {
+        const selected = this.options[this.selectedIndex];
+        if (!selected.value) return;
+        if (numeroReferencia) {
+            numeroReferencia.value = selected.dataset.numeroBooking || selected.value || '';
+        }
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,55 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="h3 mb-4">Documentos de Embarque</h1>
+    <div class="mb-3 d-flex gap-2">
+        <a href="{% url 'mis_embarques' %}" class="btn btn-outline-secondary btn-sm">&larr; Mis Embarques</a>
+        <a href="{% url 'aprobar_bl' %}" class="btn btn-outline-primary btn-sm">Aprobar Borrador BL</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">BL Aprobados</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Número de Booking</th>
+                        <th>Contenedor</th>
+                        <th>Exportador</th>
+                        <th>Consignatario</th>
+                        <th>Puerto Origen</th>
+                        <th>Puerto Destino</th>
+                        <th>Fecha Creación</th>
+                        <th>Descargar Documentos</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documentos %}
+                    <tr>
+                        <td>{{ doc.numero_booking }}</td>
+                        <td>{{ doc.numero_contenedor }}</td>
+                        <td>{{ doc.exportador|truncatechars:20 }}</td>
+                        <td>{{ doc.consignatario|truncatechars:20 }}</td>
+                        <td>{{ doc.puerto_embarque }}</td>
+                        <td>{{ doc.puerto_destino }}</td>
+                        <td>{{ doc.fecha_creacion|date:'d/m/Y' }}</td>
+                        <td>
+                            <a href="{% url 'descargar_documentos_zip' doc.pk %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'detalle_embarque' doc.pk %}" class="btn btn-sm btn-outline-info">Ver Detalle</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9" class="text-center">No hay documentos disponibles.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

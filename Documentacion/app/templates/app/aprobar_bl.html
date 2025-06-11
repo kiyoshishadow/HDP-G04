@@ -1,0 +1,89 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="h3 mb-4">Aprobar Borrador BL</h1>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Instrucciones Pendientes</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Número de Booking</th>
+                        <th>Contenedor</th>
+                        <th>Exportador</th>
+                        <th>Consignatario</th>
+                        <th>Documentos</th>
+                        <th>Estado</th>
+                        <th>Fecha Creación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instruccion in instrucciones %}
+                    <tr>
+                        <td>{{ instruccion.numero_booking }}</td>
+                        <td>{{ instruccion.numero_contenedor }}</td>
+                        <td>{{ instruccion.exportador|truncatechars:20 }}</td>
+                        <td>{{ instruccion.consignatario|truncatechars:20 }}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#docsModal{{ instruccion.id }}">
+                                Ver Documentos
+                            </button>
+                            <!-- Modal de Documentos -->
+                            <div class="modal fade" id="docsModal{{ instruccion.id }}" tabindex="-1" aria-labelledby="docsModalLabel{{ instruccion.id }}" aria-hidden="true">
+                              <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="docsModalLabel{{ instruccion.id }}">Documentos de la Instrucción</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    {% with docs=instruccion.documentos.all %}
+                                        {% if docs %}
+                                            <ul class="list-group">
+                                            {% for doc in docs %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <span class="fw-semibold">{{ doc.get_tipo_display }}</span>
+                                                        <span class="text-muted small ms-2">({{ doc.fecha_subida|date:'d/m/Y' }})</span>
+                                                    </div>
+                                                    <div>
+                                                        {% if doc.archivo %}
+                                                            <a href="{{ doc.archivo.url }}" target="_blank" class="btn btn-sm btn-outline-success">Ver PDF</a>
+                                                        {% else %}
+                                                            <span class="text-muted">No disponible</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <span class="text-muted">Sin documentos</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-{% if instruccion.estado == 'Aprobado' %}success{% elif instruccion.estado == 'Pendiente de Revisión' %}warning text-dark{% else %}danger{% endif %}">{{ instruccion.estado }}</span></td>
+                        <td>{{ instruccion.fecha_creacion|date:'d/m/Y' }}</td>
+                        <td>
+                            {% if instruccion.estado != 'Aprobado' %}
+                            <a href="{% url 'aprobar_instruccion' instruccion.pk %}" class="btn btn-sm btn-success">Aprobar</a>
+                            {% else %}
+                            <span class="text-success">Aprobado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center">No hay instrucciones pendientes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

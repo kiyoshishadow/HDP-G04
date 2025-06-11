@@ -19,16 +19,16 @@ class Cliente(models.Model):
         return self.nombre
 
 class InstruccionEmbarque(models.Model):
-   
-    numero_booking = models.CharField("Número de Booking", max_length=50, default="sin booking")
+    reserva = models.ForeignKey('ReservaCarga', on_delete=models.SET_NULL, null=True, blank=True, related_name='instrucciones')
+    numero_booking = models.CharField("Número de Booking", max_length=50, blank=True, null=True)
     numero_contenedor = models.CharField("Número de Contenedor", max_length=50, null=True)
     
     exportador = models.TextField("Exportador", blank=True, null=True)
     consignatario = models.TextField("Consignatario", blank=True, null=True)
     notificar_a = models.TextField("Notificar a", blank=True, null=True)
     
-    puerto_embarque = models.CharField("Puerto de Destino", max_length=100, null=True)
-    puerto_destino = models.CharField("Puerto de Destino", max_length=100, default="sin puertp")
+    puerto_embarque = models.CharField("Puerto de Embarque", max_length=100, null=True)
+    puerto_destino = models.CharField("Puerto de Destino", max_length=100, blank=True, null=True)
     
     descripcion_carga = models.TextField("Descripción de la Carga", blank=True, null=True)
     instrucciones_especiales = models.TextField("Instrucciones Especiales", blank=True, null=True)
@@ -178,8 +178,53 @@ class PerfilUsuario(models.Model):
     address = models.CharField("Dirección de la calle / Número", max_length=255)
     city = models.CharField("Ciudad", max_length=100)
     postal_code = models.CharField("Código postal", max_length=20)
+    puerto = models.CharField("Puerto asignado", max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Perfil de {self.user.username}"
+
+class Puerto(models.Model):
+    nombre = models.CharField("Nombre del Puerto", max_length=100)
+    pais = models.CharField("País", max_length=100)
+    codigo = models.CharField("Código", max_length=20, blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.nombre}, {self.pais}"
+
+class Documento(models.Model):
+    TIPO_CHOICES = [
+        ('factura', 'Factura de Desembarco'),
+        ('manifiesto', 'Manifiesto de Carga'),
+        ('certificado_origen', 'Certificado de Origen'),
+        ('certificado_sanitario', 'Certificado Sanitario/Fitosanitario'),
+        ('packing_list', 'Packing List'),
+        ('conocimiento_embarque', 'Conocimiento de Embarque'),
+        ('declaracion_aduanera', 'Declaración Aduanera'),
+        ('permiso_importacion', 'Permiso de Importación'),
+        ('otros', 'Otros'),
+    ]
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente de Revisión'),
+        ('validado', 'Validado'),
+        ('rechazado', 'Rechazado'),
+        ('requiere_correccion', 'Requiere Corrección'),
+    ]
+    embarque = models.ForeignKey(InstruccionEmbarque, on_delete=models.CASCADE, related_name='documentos')
+    puerto_objeto = models.ForeignKey(Puerto, on_delete=models.SET_NULL, null=True, blank=True, related_name='documentos')
+    tipo = models.CharField("Tipo de Documento", max_length=30, choices=TIPO_CHOICES)
+    numero_referencia = models.CharField("Número de Referencia", max_length=100, blank=True, null=True)
+    fecha_emision = models.DateField("Fecha de Emisión", blank=True, null=True)
+    fecha_vencimiento = models.DateField("Fecha de Vencimiento", blank=True, null=True)
+    archivo = models.FileField("Archivo PDF", upload_to='')
+    estado = models.CharField("Estado de Validación", max_length=20, choices=ESTADO_CHOICES, default='pendiente')
+    observaciones = models.TextField("Observaciones", blank=True, null=True)
+    fecha_subida = models.DateTimeField("Fecha de Subida", auto_now_add=True)
+    fecha_validacion = models.DateTimeField("Fecha de Validación", blank=True, null=True)
+    validado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='documentos_validados')
+    es_obligatorio = models.BooleanField("Es Obligatorio", default=True)
+    es_original = models.BooleanField("Es Original", default=True)
+
+    def __str__(self):
+        return f"{self.get_tipo_display()} - {self.puerto_objeto} - {self.embarque}"
 
 

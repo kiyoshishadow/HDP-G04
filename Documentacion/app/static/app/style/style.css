@@ -1,4 +1,4 @@
-/* Asegura que html y body ocupen el 100% de la altura y elimina márgenes/paddings predeterminados */
+/* Asegura que html y body ocupen el 100% de la altura y elimina mï¿½rgenes/paddings predeterminados */
 html, body {
     height: 100%;
     margin: 0;
@@ -6,7 +6,7 @@ html, body {
     overflow-x: hidden; /* Evita el scroll horizontal */
 }
 
-/* Añade padding superior al body para compensar la navbar fija */
+/* Aï¿½ade padding superior al body para compensar la navbar fija */
 body {
     padding-top: 56px; /* Altura aproximada de la navbar. Ajustar si la navbar tiene otra altura */
 }
@@ -23,9 +23,9 @@ body {
     max-height: 100%;
 }
 
-    /* Estilos personalizados para los enlaces del menú vertical */
+    /* Estilos personalizados para los enlaces del menï¿½ vertical */
     .sidebar .nav-link {
-        color: rgba(255, 255, 255, 0.75); /* Color de texto más claro para links */
+        color: rgba(255, 255, 255, 0.75); /* Color de texto mï¿½s claro para links */
         padding: 0.75rem 1rem;
         display: block; /* Para que ocupen todo el ancho del li */
     }
@@ -39,3 +39,54 @@ body {
     .sidebar .nav-item {
         margin-bottom: 0; /* Elimina margen entre elementos de la lista */
     }
+
+/* === FORMULARIO DE SUBIDA DE DOCUMENTOS === */
+.documento-upload-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    border: none;
+    margin-bottom: 2rem;
+}
+.documento-upload-card .card-header {
+    border-radius: 12px 12px 0 0;
+    background: #23272b;
+    color: #fff;
+    border-bottom: 1px solid #23272b;
+}
+.documento-upload-card .form-label {
+    font-weight: 500;
+    color: #23272b;
+}
+.documento-upload-card .form-control, .documento-upload-card select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.documento-upload-card .form-control:focus, .documento-upload-card select:focus {
+    border-color: #495057;
+    box-shadow: 0 0 0 2px #adb5bd33;
+}
+.documento-upload-card .form-check-input:checked {
+    background-color: #23272b;
+    border-color: #23272b;
+}
+.documento-upload-card .btn-doc {
+    background: #23272b;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+.documento-upload-card .btn-doc:hover {
+    background: #343a40;
+    color: #fff;
+}
+@media (max-width: 900px) {
+    .documento-upload-card .row > div {
+        margin-bottom: 1rem;
+    }
+}
