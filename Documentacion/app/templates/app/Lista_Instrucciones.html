@@ -2,15 +2,56 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="h3">{{ editar|yesno:"Editar Instrucción,Crear Nueva Instrucción" }}</h1>
+    <h1 class="h3">Bill of Lading</h1>
+    <p class="text-muted">Manage and approve shipping instructions</p>
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{% url 'lista_instrucciones' %}" class="btn btn-secondary">Cancelar</a>
-    </form>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Booking Number</th>
+                    <th>Container Number</th>
+                    <th>Shipper</th>
+                    <th>Consignee</th>
+                    <th>Port of Loading</th>
+                    <th>Port of Discharge</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instruccion in instrucciones %}
+                <tr>
+                    <td>{{ instruccion.numero_booking }}</td>
+                    <td>{{ instruccion.numero_contenedor }}</td>
+                    <td>{{ instruccion.exportador }}</td>
+                    <td>{{ instruccion.consignatario }}</td>
+                    <td>{{ instruccion.puerto_embarque }}</td>
+                    <td>{{ instruccion.puerto_destino }}</td>
+                    <td>
+                        <span class="badge bg-{% if instruccion.estado == 'Aprobado' %}success{% else %}warning{% endif %}">
+                            {{ instruccion.estado }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if instruccion.estado == "Aprobado" and instruccion.pk %}
+                        <!--<a href="{% url 'descargar_bl' instruccion.pk %}" class="btn btn-sm btn-outline-secondary">GenerarBL</a>-->
+                        <a href="{% url 'descargar_bl' instruccion.pk %}" class="btn btn-sm btn-outline-success">DescargarBL</a>
+                        {% else %}
+                        <span class="text-muted">BL disponible tras aprobación</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -1,7 +1,6 @@
 """
 Definition of urls for Documentacion.
 """
-
 from datetime import datetime
 from django.urls import path # type: ignore
 from django.contrib import admin # type: ignore
@@ -46,4 +45,7 @@ urlpatterns = [
     path('lista_instrucciones/', views.lista_instrucciones, name='lista_instrucciones'),
     path('instrucciones/editar/<int:pk>/', views.editar_instruccion, name='editar_instruccion'),
     path('instrucciones/aprobar/<int:pk>/', views.aprobar_instruccion, name='aprobar_instruccion'),
+    path('instruccion/nueva/', views.instruccion_embarque_create, name='instruccion_embarque_create'),
+    path('instruccion/aprobar/<int:pk>/', views.descargar_bl, name='descargar_bl'),
+
 ]

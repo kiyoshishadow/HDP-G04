@@ -17,6 +17,13 @@ from django.conf import settings
 from .forms import InstruccionEmbarqueForm, ReservaCargaForm, RegistroUsuarioForm, PerfilUsuarioForm, InstruccionEmbarqueForm
 from .models import ReservaCarga, InstruccionEmbarque, PerfilUsuario
 from django.contrib import messages
+from django.template.loader import render_to_string # type: ignore
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
 
 def home(request):
     """Renders the home page."""
@@ -257,3 +264,31 @@ def aprobar_instruccion(request, pk):
     messages.success(request, 'La instrucción ha sido aprobada.')
     return redirect('lista_instrucciones')
 
+
+def instruccion_embarque_create(request):
+    instrucciones = InstruccionEmbarque.objects.all().order_by('-fecha_creacion')
+    return render(request, 'app/lista_instrucciones.html', {'instrucciones': instrucciones})
+
+
+def descargar_bl(request, pk):
+    instruccion = get_object_or_404(InstruccionEmbarque, pk=pk)
+
+    # Generar HTML y convertir a PDF
+    template = get_template("app/bl_template.html")
+    html = template.render({"instruccion": instruccion})
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(html, dest=result)
+
+    if pisa_status.err:
+        return HttpResponse("Error al generar PDF", status=500)
+
+    # Convertir bytes a archivo compatible con FileField
+    filename = f"BL_{instruccion.numero_booking}.pdf"
+    instruccion.bl_pdf.save(filename, ContentFile(result.getvalue()), save=True)
+
+    # Configurar la respuesta para descarga automática
+    #response = HttpResponse(result.getvalue(), content_type="application/pdf")
+    #response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    return HttpResponse(result.getvalue(), content_type="application/pdf")
+    #return response

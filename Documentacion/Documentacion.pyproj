@@ -65,8 +65,10 @@
     <Content Include="app\static\app\style\style.css" />
     <Content Include="app\templates\app\aprobacionBL.html" />
     <Content Include="app\templates\app\bill_of_lading.html" />
+    <Content Include="app\templates\app\bl_template.html" />
     <Content Include="app\templates\app\ConfirmacionEmbarque.html" />
     <Content Include="app\templates\app\editar_instruccion.html" />
+    <Content Include="app\templates\app\editar_reserva.html" />
     <Content Include="app\templates\app\InstruccionEmbarque.html" />
     <Content Include="app\templates\app\crear_reserva.html" />
     <Content Include="app\templates\app\Lista_Instrucciones.html" />

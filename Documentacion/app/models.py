@@ -36,6 +36,8 @@ class InstruccionEmbarque(models.Model):
     estado = models.CharField("Estado", max_length=50, default="Pendiente de Revisión")
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
+    bl_pdf = models.FileField(upload_to="bill_of_lading/", blank=True, null=True) 
+
     def __str__(self):
         return f"{self.numero_booking} - {self.numero_contenedor}"
 

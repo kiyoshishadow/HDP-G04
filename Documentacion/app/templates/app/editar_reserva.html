@@ -4,16 +4,16 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">Editar Reserva</h2>
-    
+
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         {# Mostrar errores generales del formulario #}
         {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                <strong>Errores generales:</strong>
-                {{ form.non_field_errors }}
-            </div>
+        <div class="alert alert-danger">
+            <strong>Errores generales:</strong>
+            {{ form.non_field_errors }}
+        </div>
         {% endif %}
 
         <div class="row">
@@ -28,28 +28,28 @@
                             <label for="id_nombre_empresa_solicitante" class="form-label">Nombre de la Empresa Solicitante / Persona de Contacto</label>
                             <input type="text" class="form-control" id="id_nombre_empresa_solicitante" name="nombre_empresa_solicitante" value="{{ form.nombre_empresa_solicitante.value|default:'' }}" {% if form.nombre_empresa_solicitante.field.required %}required{% endif %}>
                             {% if form.nombre_empresa_solicitante.errors %}
-                                <div class="text-danger">{{ form.nombre_empresa_solicitante.errors }}</div>
+                            <div class="text-danger">{{ form.nombre_empresa_solicitante.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_id_cliente_texto" class="form-label">ID de Cliente (Opcional)</label>
                             <input type="text" class="form-control" id="id_id_cliente_texto" name="id_cliente_texto" value="{{ form.id_cliente_texto.value|default:'' }}">
                             {% if form.id_cliente_texto.errors %}
-                                <div class="text-danger">{{ form.id_cliente_texto.errors }}</div>
+                            <div class="text-danger">{{ form.id_cliente_texto.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_email_contacto" class="form-label">Email de Contacto</label>
                             <input type="email" class="form-control" id="id_email_contacto" name="email_contacto" value="{{ form.email_contacto.value|default:'' }}" {% if form.email_contacto.field.required %}required{% endif %}>
                             {% if form.email_contacto.errors %}
-                                <div class="text-danger">{{ form.email_contacto.errors }}</div>
+                            <div class="text-danger">{{ form.email_contacto.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_telefono_contacto" class="form-label">Teléfono de Contacto</label>
                             <input type="text" class="form-control" id="id_telefono_contacto" name="telefono_contacto" value="{{ form.telefono_contacto.value|default:'' }}" {% if form.telefono_contacto.field.required %}required{% endif %}>
                             {% if form.telefono_contacto.errors %}
-                                <div class="text-danger">{{ form.telefono_contacto.errors }}</div>
+                            <div class="text-danger">{{ form.telefono_contacto.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <label for="id_numero_cotizacion" class="form-label">Número de Cotización</label>
                             <input type="text" class="form-control" id="id_numero_cotizacion" name="numero_cotizacion" value="{{ form.numero_cotizacion.value|default:'' }}">
                             {% if form.numero_cotizacion.errors %}
-                                <div class="text-danger">{{ form.numero_cotizacion.errors }}</div>
+                            <div class="text-danger">{{ form.numero_cotizacion.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -85,18 +85,18 @@
                             <label for="id_descripcion_mercancia" class="form-label">Descripción de la Mercancía</label>
                             <textarea class="form-control" id="id_descripcion_mercancia" name="descripcion_mercancia" rows="3" {% if form.descripcion_mercancia.field.required %}required{% endif %}>{{ form.descripcion_mercancia.value|default:'' }}</textarea>
                             {% if form.descripcion_mercancia.errors %}
-                                <div class="text-danger">{{ form.descripcion_mercancia.errors }}</div>
+                            <div class="text-danger">{{ form.descripcion_mercancia.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_tipo_mercancia" class="form-label">Tipo de Mercancía</label>
                             <select class="form-select" id="id_tipo_mercancia" name="tipo_mercancia" {% if form.tipo_mercancia.field.required %}required{% endif %}>
                                 {% for value, text in form.tipo_mercancia.field.choices %}
-                                    <option value="{{ value }}" {% if form.tipo_mercancia.value == value %}selected{% endif %}>{{ text }}</option>
+                                <option value="{{ value }}" {% if form.tipo_mercancia.value= =value %}selected{% endif %}>{{ text }}</option>
                                 {% endfor %}
                             </select>
                             {% if form.tipo_mercancia.errors %}
-                                <div class="text-danger">{{ form.tipo_mercancia.errors }}</div>
+                            <div class="text-danger">{{ form.tipo_mercancia.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="row">
@@ -104,18 +104,18 @@
                                 <label for="id_peso_bruto_total" class="form-label">Peso Bruto Total</label>
                                 <input type="number" class="form-control" id="id_peso_bruto_total" name="peso_bruto_total" step="0.01" value="{{ form.peso_bruto_total.value|default:'' }}" {% if form.peso_bruto_total.field.required %}required{% endif %}>
                                 {% if form.peso_bruto_total.errors %}
-                                    <div class="text-danger">{{ form.peso_bruto_total.errors }}</div>
+                                <div class="text-danger">{{ form.peso_bruto_total.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_unidad_peso" class="form-label">Unidad de Peso</label>
                                 <select class="form-select" id="id_unidad_peso" name="unidad_peso" {% if form.unidad_peso.field.required %}required{% endif %}>
                                     {% for value, text in form.unidad_peso.field.choices %}
-                                        <option value="{{ value }}" {% if form.unidad_peso.value == value %}selected{% endif %}>{{ text }}</option>
+                                    <option value="{{ value }}" {% if form.unidad_peso.value= =value %}selected{% endif %}>{{ text }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if form.unidad_peso.errors %}
-                                    <div class="text-danger">{{ form.unidad_peso.errors }}</div>
+                                <div class="text-danger">{{ form.unidad_peso.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -124,14 +124,14 @@
                                 <label for="id_volumen_total" class="form-label">Volumen Total (CBM) (Opcional)</label>
                                 <input type="number" class="form-control" id="id_volumen_total" name="volumen_total" step="0.01" value="{{ form.volumen_total.value|default:'' }}">
                                 {% if form.volumen_total.errors %}
-                                    <div class="text-danger">{{ form.volumen_total.errors }}</div>
+                                <div class="text-danger">{{ form.volumen_total.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_numero_bultos" class="form-label">Número de Bultos/Paquetes</label>
                                 <input type="number" class="form-control" id="id_numero_bultos" name="numero_bultos" value="{{ form.numero_bultos.value|default:'' }}" {% if form.numero_bultos.field.required %}required{% endif %}>
                                 {% if form.numero_bultos.errors %}
-                                    <div class="text-danger">{{ form.numero_bultos.errors }}</div>
+                                <div class="text-danger">{{ form.numero_bultos.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                             <label for="id_codigo_hs" class="form-label">Código HS (Opcional)</label>
                             <input type="text" class="form-control" id="id_codigo_hs" name="codigo_hs" value="{{ form.codigo_hs.value|default:'' }}">
                             {% if form.codigo_hs.errors %}
-                                <div class="text-danger">{{ form.codigo_hs.errors }}</div>
+                            <div class="text-danger">{{ form.codigo_hs.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -157,25 +157,25 @@
                             <label for="id_tipo_contenedor" class="form-label">Tipo de Contenedor</label>
                             <select class="form-select" id="id_tipo_contenedor" name="tipo_contenedor" {% if form.tipo_contenedor.field.required %}required{% endif %}>
                                 {% for value, text in form.tipo_contenedor.field.choices %}
-                                    <option value="{{ value }}" {% if form.tipo_contenedor.value == value %}selected{% endif %}>{{ text }}</option>
+                                <option value="{{ value }}" {% if form.tipo_contenedor.value= =value %}selected{% endif %}>{{ text }}</option>
                                 {% endfor %}
                             </select>
                             {% if form.tipo_contenedor.errors %}
-                                <div class="text-danger">{{ form.tipo_contenedor.errors }}</div>
+                            <div class="text-danger">{{ form.tipo_contenedor.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_cantidad_contenedores" class="form-label">Cantidad de Contenedores</label>
                             <input type="number" class="form-control" id="id_cantidad_contenedores" name="cantidad_contenedores" value="{{ form.cantidad_contenedores.value|default:'' }}" {% if form.cantidad_contenedores.field.required %}required{% endif %}>
                             {% if form.cantidad_contenedores.errors %}
-                                <div class="text-danger">{{ form.cantidad_contenedores.errors }}</div>
+                            <div class="text-danger">{{ form.cantidad_contenedores.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_condiciones_especiales_contenedor" class="form-label">Condiciones Especiales del Contenedor (Opcional)</label>
                             <input type="text" class="form-control" id="id_condiciones_especiales_contenedor" name="condiciones_especiales_contenedor" value="{{ form.condiciones_especiales_contenedor.value|default:'' }}">
                             {% if form.condiciones_especiales_contenedor.errors %}
-                                <div class="text-danger">{{ form.condiciones_especiales_contenedor.errors }}</div>
+                            <div class="text-danger">{{ form.condiciones_especiales_contenedor.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -194,14 +194,14 @@
                                 <label for="id_puerto_origen" class="form-label">Puerto de Origen (POL)</label>
                                 <input type="text" class="form-control" id="id_puerto_origen" name="puerto_origen" value="{{ form.puerto_origen.value|default:'' }}" {% if form.puerto_origen.field.required %}required{% endif %}>
                                 {% if form.puerto_origen.errors %}
-                                    <div class="text-danger">{{ form.puerto_origen.errors }}</div>
+                                <div class="text-danger">{{ form.puerto_origen.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_puerto_destino" class="form-label">Puerto de Destino (POD)</label>
                                 <input type="text" class="form-control" id="id_puerto_destino" name="puerto_destino" value="{{ form.puerto_destino.value|default:'' }}" {% if form.puerto_destino.field.required %}required{% endif %}>
                                 {% if form.puerto_destino.errors %}
-                                    <div class="text-danger">{{ form.puerto_destino.errors }}</div>
+                                <div class="text-danger">{{ form.puerto_destino.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                             <label for="id_puerto_transbordo" class="form-label">Puerto de Transbordo (Opcional)</label>
                             <input type="text" class="form-control" id="id_puerto_transbordo" name="puerto_transbordo" value="{{ form.puerto_transbordo.value|default:'' }}">
                             {% if form.puerto_transbordo.errors %}
-                                <div class="text-danger">{{ form.puerto_transbordo.errors }}</div>
+                            <div class="text-danger">{{ form.puerto_transbordo.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="row">
@@ -217,14 +217,14 @@
                                 <label for="id_fecha_embarque" class="form-label">Fecha Estimada de Embarque (ETD)</label>
                                 <input type="date" class="form-control" id="id_fecha_embarque" name="fecha_embarque" value="{{ form.fecha_embarque.value|date:'Y-m-d'|default:'' }}" {% if form.fecha_embarque.field.required %}required{% endif %}>
                                 {% if form.fecha_embarque.errors %}
-                                    <div class="text-danger">{{ form.fecha_embarque.errors }}</div>
+                                <div class="text-danger">{{ form.fecha_embarque.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_fecha_limite_llegada" class="form-label">Fecha Límite de Llegada (Opcional)</label>
                                 <input type="date" class="form-control" id="id_fecha_limite_llegada" name="fecha_limite_llegada" value="{{ form.fecha_limite_llegada.value|date:'Y-m-d'|default:'' }}">
                                 {% if form.fecha_limite_llegada.errors %}
-                                    <div class="text-danger">{{ form.fecha_limite_llegada.errors }}</div>
+                                <div class="text-danger">{{ form.fecha_limite_llegada.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                             <label for="id_viaje_buque" class="form-label">Selección de Viaje/Buque Específico (Opcional)</label>
                             <input type="text" class="form-control" id="id_viaje_buque" name="viaje_buque" value="{{ form.viaje_buque.value|default:'' }}">
                             {% if form.viaje_buque.errors %}
-                                <div class="text-danger">{{ form.viaje_buque.errors }}</div>
+                            <div class="text-danger">{{ form.viaje_buque.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -252,14 +252,14 @@
                             <label for="id_shipper_nombre" class="form-label">Nombre Completo / Razón Social</label>
                             <input type="text" class="form-control" id="id_shipper_nombre" name="shipper_nombre" value="{{ form.shipper_nombre.value|default:'' }}" {% if form.shipper_nombre.field.required %}required{% endif %}>
                             {% if form.shipper_nombre.errors %}
-                                <div class="text-danger">{{ form.shipper_nombre.errors }}</div>
+                            <div class="text-danger">{{ form.shipper_nombre.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_shipper_direccion" class="form-label">Dirección Completa</label>
                             <textarea class="form-control" id="id_shipper_direccion" name="shipper_direccion" rows="2" {% if form.shipper_direccion.field.required %}required{% endif %}>{{ form.shipper_direccion.value|default:'' }}</textarea>
                             {% if form.shipper_direccion.errors %}
-                                <div class="text-danger">{{ form.shipper_direccion.errors }}</div>
+                            <div class="text-danger">{{ form.shipper_direccion.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="row">
@@ -267,14 +267,14 @@
                                 <label for="id_shipper_telefono" class="form-label">Teléfono de Contacto</label>
                                 <input type="text" class="form-control" id="id_shipper_telefono" name="shipper_telefono" value="{{ form.shipper_telefono.value|default:'' }}" {% if form.shipper_telefono.field.required %}required{% endif %}>
                                 {% if form.shipper_telefono.errors %}
-                                    <div class="text-danger">{{ form.shipper_telefono.errors }}</div>
+                                <div class="text-danger">{{ form.shipper_telefono.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_shipper_email" class="form-label">Email de Contacto</label>
                                 <input type="email" class="form-control" id="id_shipper_email" name="shipper_email" value="{{ form.shipper_email.value|default:'' }}" {% if form.shipper_email.field.required %}required{% endif %}>
                                 {% if form.shipper_email.errors %}
-                                    <div class="text-danger">{{ form.shipper_email.errors }}</div>
+                                <div class="text-danger">{{ form.shipper_email.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -285,14 +285,14 @@
                             <label for="id_consignee_nombre" class="form-label">Nombre Completo / Razón Social</label>
                             <input type="text" class="form-control" id="id_consignee_nombre" name="consignee_nombre" value="{{ form.consignee_nombre.value|default:'' }}" {% if form.consignee_nombre.field.required %}required{% endif %}>
                             {% if form.consignee_nombre.errors %}
-                                <div class="text-danger">{{ form.consignee_nombre.errors }}</div>
+                            <div class="text-danger">{{ form.consignee_nombre.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_consignee_direccion" class="form-label">Dirección Completa</label>
                             <textarea class="form-control" id="id_consignee_direccion" name="consignee_direccion" rows="2" {% if form.consignee_direccion.field.required %}required{% endif %}>{{ form.consignee_direccion.value|default:'' }}</textarea>
                             {% if form.consignee_direccion.errors %}
-                                <div class="text-danger">{{ form.consignee_direccion.errors }}</div>
+                            <div class="text-danger">{{ form.consignee_direccion.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="row">
@@ -300,14 +300,14 @@
                                 <label for="id_consignee_telefono" class="form-label">Teléfono de Contacto</label>
                                 <input type="text" class="form-control" id="id_consignee_telefono" name="consignee_telefono" value="{{ form.consignee_telefono.value|default:'' }}" {% if form.consignee_telefono.field.required %}required{% endif %}>
                                 {% if form.consignee_telefono.errors %}
-                                    <div class="text-danger">{{ form.consignee_telefono.errors }}</div>
+                                <div class="text-danger">{{ form.consignee_telefono.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_consignee_email" class="form-label">Email de Contacto</label>
                                 <input type="email" class="form-control" id="id_consignee_email" name="consignee_email" value="{{ form.consignee_email.value|default:'' }}" {% if form.consignee_email.field.required %}required{% endif %}>
                                 {% if form.consignee_email.errors %}
-                                    <div class="text-danger">{{ form.consignee_email.errors }}</div>
+                                <div class="text-danger">{{ form.consignee_email.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -319,14 +319,14 @@
                                 <label for="id_notify_nombre" class="form-label">Nombre Completo / Razón Social</label>
                                 <input type="text" class="form-control" id="id_notify_nombre" name="notify_nombre" value="{{ form.notify_nombre.value|default:'' }}">
                                 {% if form.notify_nombre.errors %}
-                                    <div class="text-danger">{{ form.notify_nombre.errors }}</div>
+                                <div class="text-danger">{{ form.notify_nombre.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_notify_direccion" class="form-label">Dirección Completa</label>
                                 <textarea class="form-control" id="id_notify_direccion" name="notify_direccion" rows="2">{{ form.notify_direccion.value|default:'' }}</textarea>
                                 {% if form.notify_direccion.errors %}
-                                    <div class="text-danger">{{ form.notify_direccion.errors }}</div>
+                                <div class="text-danger">{{ form.notify_direccion.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -335,14 +335,14 @@
                                 <label for="id_notify_telefono" class="form-label">Teléfono de Contacto</label>
                                 <input type="text" class="form-control" id="id_notify_telefono" name="notify_telefono" value="{{ form.notify_telefono.value|default:'' }}">
                                 {% if form.notify_telefono.errors %}
-                                    <div class="text-danger">{{ form.notify_telefono.errors }}</div>
+                                <div class="text-danger">{{ form.notify_telefono.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_notify_email" class="form-label">Email de Contacto</label>
                                 <input type="email" class="form-control" id="id_notify_email" name="notify_email" value="{{ form.notify_email.value|default:'' }}">
                                 {% if form.notify_email.errors %}
-                                    <div class="text-danger">{{ form.notify_email.errors }}</div>
+                                <div class="text-danger">{{ form.notify_email.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -361,42 +361,42 @@
                             <input class="form-check-input" type="checkbox" id="id_seguro_carga" name="seguro_carga" {% if form.seguro_carga.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_seguro_carga">Seguro de Carga</label>
                             {% if form.seguro_carga.errors %}
-                                <div class="text-danger">{{ form.seguro_carga.errors }}</div>
+                            <div class="text-danger">{{ form.seguro_carga.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="id_despacho_origen" name="despacho_origen" {% if form.despacho_origen.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_despacho_origen">Despacho Aduanal en Origen</label>
                             {% if form.despacho_origen.errors %}
-                                <div class="text-danger">{{ form.despacho_origen.errors }}</div>
+                            <div class="text-danger">{{ form.despacho_origen.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="id_despacho_destino" name="despacho_destino" {% if form.despacho_destino.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_despacho_destino">Despacho Aduanal en Destino</label>
                             {% if form.despacho_destino.errors %}
-                                <div class="text-danger">{{ form.despacho_destino.errors }}</div>
+                            <div class="text-danger">{{ form.despacho_destino.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="id_transporte_origen" name="transporte_origen" {% if form.transporte_origen.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_transporte_origen">Transporte Terrestre en Origen (Pre-carriage)</label>
                             {% if form.transporte_origen.errors %}
-                                <div class="text-danger">{{ form.transporte_origen.errors }}</div>
+                            <div class="text-danger">{{ form.transporte_origen.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="id_transporte_destino" name="transporte_destino" {% if form.transporte_destino.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_transporte_destino">Transporte Terrestre en Destino (On-carriage)</label>
                             {% if form.transporte_destino.errors %}
-                                <div class="text-danger">{{ form.transporte_destino.errors }}</div>
+                            <div class="text-danger">{{ form.transporte_destino.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
                             <label for="id_otros_servicios" class="form-label">Otros (Especificar)</label>
                             <input type="text" class="form-control" id="id_otros_servicios" name="otros_servicios" value="{{ form.otros_servicios.value|default:'' }}">
                             {% if form.otros_servicios.errors %}
-                                <div class="text-danger">{{ form.otros_servicios.errors }}</div>
+                            <div class="text-danger">{{ form.otros_servicios.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -414,7 +414,7 @@
                             <label for="id_instrucciones_especiales" class="form-label">Instrucciones Especiales / Comentarios</label>
                             <textarea class="form-control" id="id_instrucciones_especiales" name="instrucciones_especiales" rows="3">{{ form.instrucciones_especiales.value|default:'' }}</textarea>
                             {% if form.instrucciones_especiales.errors %}
-                                <div class="text-danger">{{ form.instrucciones_especiales.errors }}</div>
+                            <div class="text-danger">{{ form.instrucciones_especiales.errors }}</div>
                             {% endif %}
                         </div>
                         <!-- Campos específicos para carga refrigerada -->
@@ -424,25 +424,25 @@
                                 <label for="id_temperatura_requerida" class="form-label">Temperatura Requerida</label>
                                 <input type="number" class="form-control" id="id_temperatura_requerida" name="temperatura_requerida" step="0.1" value="{{ form.temperatura_requerida.value|default:'' }}">
                                 {% if form.temperatura_requerida.errors %}
-                                    <div class="text-danger">{{ form.temperatura_requerida.errors }}</div>
+                                <div class="text-danger">{{ form.temperatura_requerida.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="id_unidad_temperatura" class="form-label">Unidad</label>
                                 <select class="form-select" id="id_unidad_temperatura" name="unidad_temperatura">
-                                     {% for value, text in form.unidad_temperatura.field.choices %}
-                                        <option value="{{ value }}" {% if form.unidad_temperatura.value == value %}selected{% endif %}>{{ text }}</option>
+                                    {% for value, text in form.unidad_temperatura.field.choices %}
+                                    <option value="{{ value }}" {% if form.unidad_temperatura.value= =value %}selected{% endif %}>{{ text }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if form.unidad_temperatura.errors %}
-                                    <div class="text-danger">{{ form.unidad_temperatura.errors }}</div>
+                                <div class="text-danger">{{ form.unidad_temperatura.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-4 mb-3 form-check mt-4">
                                 <input class="form-check-input" type="checkbox" id="id_ventilacion_requerida" name="ventilacion_requerida" {% if form.ventilacion_requerida.value %}checked{% endif %}>
                                 <label class="form-check-label" for="id_ventilacion_requerida">Ventilación Requerida</label>
                                 {% if form.ventilacion_requerida.errors %}
-                                    <div class="text-danger">{{ form.ventilacion_requerida.errors }}</div>
+                                <div class="text-danger">{{ form.ventilacion_requerida.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -453,21 +453,21 @@
                                 <label for="id_numero_un" class="form-label">Número UN</label>
                                 <input type="text" class="form-control" id="id_numero_un" name="numero_un" value="{{ form.numero_un.value|default:'' }}">
                                 {% if form.numero_un.errors %}
-                                    <div class="text-danger">{{ form.numero_un.errors }}</div>
+                                <div class="text-danger">{{ form.numero_un.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="id_imo_class" class="form-label">IMO Class</label>
                                 <input type="text" class="form-control" id="id_imo_class" name="imo_class" value="{{ form.imo_class.value|default:'' }}">
                                 {% if form.imo_class.errors %}
-                                    <div class="text-danger">{{ form.imo_class.errors }}</div>
+                                <div class="text-danger">{{ form.imo_class.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="id_packing_group" class="form-label">Packing Group</label>
                                 <input type="text" class="form-control" id="id_packing_group" name="packing_group" value="{{ form.packing_group.value|default:'' }}">
                                 {% if form.packing_group.errors %}
-                                    <div class="text-danger">{{ form.packing_group.errors }}</div>
+                                <div class="text-danger">{{ form.packing_group.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -486,7 +486,7 @@
                             <label for="id_notas_documentacion" class="form-label">Notas sobre documentación o documentos a preparar</label>
                             <textarea class="form-control" id="id_notas_documentacion" name="notas_documentacion" rows="3">{{ form.notas_documentacion.value|default:'' }}</textarea>
                             {% if form.notas_documentacion.errors %}
-                                <div class="text-danger">{{ form.notas_documentacion.errors }}</div>
+                            <div class="text-danger">{{ form.notas_documentacion.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -507,47 +507,51 @@
 </div>
 
 <style>
-.autocomplete-suggestions {
-    position: absolute;
-    z-index: 1000;
-    width: 100%;
-    background: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transform: scale(0.98);
-    opacity: 0;
-    pointer-events: none;
-    transition: box-shadow 0.2s, transform 0.18s cubic-bezier(.4,0,.2,1), opacity 0.18s;
-}
-.autocomplete-suggestions.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.13);
-}
-.autocomplete-suggestion {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, transform 0.08s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-.autocomplete-suggestion:hover, .autocomplete-suggestion.active {
-    background: #0d6efd;
-    color: #fff;
-    transform: scale(1.03);
-}
-.autocomplete-suggestion:active {
-    background: #084298;
-    color: #fff;
-    transform: scale(0.97);
-}
+    .autocomplete-suggestions {
+        position: absolute;
+        z-index: 1000;
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transform: scale(0.98);
+        opacity: 0;
+        pointer-events: none;
+        transition: box-shadow 0.2s, transform 0.18s cubic-bezier(.4,0,.2,1), opacity 0.18s;
+    }
+
+        .autocomplete-suggestions.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+        }
+
+    .autocomplete-suggestion {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, transform 0.08s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+        .autocomplete-suggestion:hover, .autocomplete-suggestion.active {
+            background: #0d6efd;
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        .autocomplete-suggestion:active {
+            background: #084298;
+            color: #fff;
+            transform: scale(0.97);
+        }
 </style>
 
 <script>
