@@ -92,7 +92,7 @@
                             <label for="id_tipo_mercancia" class="form-label">Tipo de Mercancía</label>
                             <select class="form-select" id="id_tipo_mercancia" name="tipo_mercancia" {% if form.tipo_mercancia.field.required %}required{% endif %}>
                                 {% for value, text in form.tipo_mercancia.field.choices %}
-                                <option value="{{ value }}" {% if form.tipo_mercancia.value= =value %}selected{% endif %}>{{ text }}</option>
+                                <option value="{{ value }}" {% if form.tipo_mercancia.value == value %}selected{% endif %}>{{ text }}</option>
                                 {% endfor %}
                             </select>
                             {% if form.tipo_mercancia.errors %}
@@ -111,7 +111,7 @@
                                 <label for="id_unidad_peso" class="form-label">Unidad de Peso</label>
                                 <select class="form-select" id="id_unidad_peso" name="unidad_peso" {% if form.unidad_peso.field.required %}required{% endif %}>
                                     {% for value, text in form.unidad_peso.field.choices %}
-                                    <option value="{{ value }}" {% if form.unidad_peso.value= =value %}selected{% endif %}>{{ text }}</option>
+                                    <option value="{{ value }}" {% if form.unidad_peso.value == value %}selected{% endif %}>{{ text }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if form.unidad_peso.errors %}
@@ -157,7 +157,7 @@
                             <label for="id_tipo_contenedor" class="form-label">Tipo de Contenedor</label>
                             <select class="form-select" id="id_tipo_contenedor" name="tipo_contenedor" {% if form.tipo_contenedor.field.required %}required{% endif %}>
                                 {% for value, text in form.tipo_contenedor.field.choices %}
-                                <option value="{{ value }}" {% if form.tipo_contenedor.value= =value %}selected{% endif %}>{{ text }}</option>
+                                <option value="{{ value }}" {% if form.tipo_contenedor.value == value %}selected{% endif %}>{{ text }}</option>
                                 {% endfor %}
                             </select>
                             {% if form.tipo_contenedor.errors %}
@@ -431,7 +431,7 @@
                                 <label for="id_unidad_temperatura" class="form-label">Unidad</label>
                                 <select class="form-select" id="id_unidad_temperatura" name="unidad_temperatura">
                                     {% for value, text in form.unidad_temperatura.field.choices %}
-                                    <option value="{{ value }}" {% if form.unidad_temperatura.value= =value %}selected{% endif %}>{{ text }}</option>
+                                    <option value="{{ value }}" {% if form.unidad_temperatura.value == value %}selected{% endif %}>{{ text }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if form.unidad_temperatura.errors %}
