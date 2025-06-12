@@ -55,7 +55,7 @@ class InstruccionEmbarqueForm(ModelForm):
 class ReservaCargaForm(forms.ModelForm):
     class Meta:
         model = ReservaCarga
-        exclude = ['usuario', 'fecha_creacion_reserva', 'ultima_actualizacion_reserva']
+        exclude = ['usuario', 'fecha_creacion_reserva', 'ultima_actualizacion_reserva', 'estado_reserva']
         widgets = {
             'fecha_embarque': DateInput(attrs={'type': 'date'}),
             'fecha_limite_llegada': DateInput(attrs={'type': 'date'}),

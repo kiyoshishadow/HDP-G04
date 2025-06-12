@@ -81,10 +81,6 @@ def crear_instruccion_embarque(request):
     return render(request, 'app/InstruccionEmbarque.html', {'form': form})
 
 def confirmacion_instruccion(request):
-    return render(request, 'app/ConfirmacionEmbarque.html'), ({"form": form, "submitSuccess": submit_success})
-
-
-def confirmacion_instruccion(request):
     return render(request, 'app/ConfirmacionEmbarque.html')
 
 
@@ -98,6 +94,8 @@ def crear_reserva(request):
             print("Formulario válido. Guardando...")
             reserva = form.save(commit=False)
             reserva.usuario = request.user
+            if not reserva.estado_reserva:
+                reserva.estado_reserva = 'solicitada'  # Valor predeterminado
             reserva.save()
             print("Datos guardados.")
             return render(request, 'app/crear_reserva.html', {'form': form, 'success': True})
@@ -131,11 +129,17 @@ def editar_reserva(request, reserva_id):
     reserva = get_object_or_404(ReservaCarga, id=reserva_id)
     
     if request.method == 'POST':
-        form = ReservaCargaForm(request.POST, instance=reserva)
+        form = ReservaCargaForm(request.POST, request.FILES, instance=reserva)
         if form.is_valid():
-            form.save()
+            reserva = form.save(commit=False)
+            # Si el campo no viene en el POST, mantenemos el valor anterior
+            if 'estado_reserva' not in form.cleaned_data or not form.cleaned_data['estado_reserva']:
+                reserva.estado_reserva = ReservaCarga.objects.get(pk=reserva.pk).estado_reserva
+            reserva.save()
             messages.success(request, 'Reserva actualizada correctamente.')
             return redirect('mis_reservas')
+        else:
+            print("Errores del formulario:", form.errors)
     else:
         form = ReservaCargaForm(instance=reserva)
     
